@@ -3,28 +3,121 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
+footer: 'Week 1 · Day 1 — Setup and First Message'
 ---
 
+<style>
+/* --- Workshop theme (week1-day1 draft; promote to slides/theme.css once locked) --- */
+section {
+  font-size: 30px;
+  line-height: 1.45;
+  color: #1c2733;
+  justify-content: flex-start;
+  padding: 64px 78px 84px;
+  font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+h2 {
+  font-size: 46px;
+  color: #15365c;
+  margin: 0 0 0.5em;
+  padding-bottom: 0.18em;
+  border-bottom: 3px solid #e8a04b;
+}
+h3 { font-size: 32px; color: #15365c; margin: 0.25em 0; }
+strong { color: #c2561e; }
+ul, ol { margin-top: 0.2em; }
+li { margin-bottom: 0.4em; }
+li > ul { margin-top: 0.3em; }
+em { color: #4a5b6a; }
+code {
+  background: rgba(21, 54, 92, 0.09);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.86em;
+}
+pre {
+  background: #0f2233;
+  border-radius: 12px;
+  padding: 20px 26px;
+  font-size: 23px;
+  line-height: 1.45;
+  box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
+}
+pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+table { font-size: 27px; }
+th { background: rgba(21, 54, 92, 0.10); }
+blockquote {
+  border-left: 5px solid #e8a04b;
+  color: #4a5b6a;
+  font-style: italic;
+  padding-left: 0.7em;
+  margin-left: 0;
+}
+.flow {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  color: #15365c;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 14px;
+  padding: 14px 10px;
+  margin: 6px 0 24px;
+}
+footer { color: #6a7b8a; font-size: 16px; }
+
+/* Title slide over the photo */
+section.title {
+  justify-content: center;
+  color: #fff;
+  position: relative;
+}
+section.title h1 {
+  font-size: 58px;
+  white-space: nowrap;
+  color: #fff;
+  margin-bottom: 0.1em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+section.title h2 {
+  font-size: 40px;
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+section.title p {
+  position: absolute;
+  left: 78px;
+  bottom: 52px;
+  margin: 0;
+}
+section.title p, section.title strong {
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+</style>
+
+<!-- _class: title -->
 <!-- _backgroundImage: url('img/title.jpg') -->
-<!-- _color: white -->
 <!-- _paginate: false -->
+<!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
 ## Week 1 — Day 1: Setup and First Message
 
-**Edik Simonian**
+**Edik Simonian, Summer 2026**
 
 ---
 
 ## What you'll build this week
 
 - A **Telegram bot** powered by a real LLM
-- With its own **personality** (you design it)
-- Custom **slash commands** (you code them)
+- With its own **personality** — you design it
+- Custom **slash commands** — you code them
 - **Memory** that survives restarts
-- **Deployed on the internet** by Friday — running even when your laptop is closed
+- **Live on the internet** by Friday — running even when your laptop is closed
 
-By the end of today: the bot replies to you, from code running on your machine.
+*By the end of today: the bot replies to you, from code on your machine.*
 
 ---
 
@@ -32,33 +125,32 @@ By the end of today: the bot replies to you, from code running on your machine.
 
 Two ways Telegram talks to your code:
 
-- **Polling** — your code keeps asking Telegram: *"any new messages?"*
-  → what we use today, on your laptop
+- **Polling** — your code keeps asking Telegram *"any new messages?"*
+  → what we use **today**, on your laptop
 - **Webhook** — Telegram pushes each message to your server's URL
-  → what we use on Friday, in production
+  → what we use **Friday**, in production
 
-Same bot code either way — only the delivery changes.
+*Same bot code either way — only the delivery changes.*
 
 ---
 
 ## The stack
 
-**Telegram → Flask (Python) → Cerebras → reply**
+<div class="flow">Telegram → Flask (Python) → Cerebras → reply</div>
 
 - **Telegram Bot API** — the messaging interface
 - **Flask** — receives the messages
-- **Cerebras** — runs the LLM that writes the replies (free tier)
-- **SQLite** — memory (Day 4)
-- **PythonAnywhere** — hosting (Day 5)
+- **Cerebras** — runs the LLM that writes the replies *(free tier)*
+- **SQLite** — memory *(Day 4)*
+- **PythonAnywhere** — hosting *(Day 5)*
 - **GitHub** — your code, your tests, your deploys
 
 ---
 
 ## Setup 1 of 3 — GitHub
 
-1. Create a GitHub account (if you don't have one)
+1. Create a GitHub account *(if you don't have one)*
 2. **Fork** the repo — your own copy, needed for auto-deploy on Day 5
-   `github.com/EdikSimonian/telegram-vercel-bot`
 3. Clone your fork and install:
 
 ```bash
@@ -85,7 +177,7 @@ README's age-requirements section.
 
 ## Setup 3 of 3 — AI API key
 
-1. Sign up at **cloud.cerebras.ai** (free, no credit card)
+1. Sign up at **cloud.cerebras.ai** *(free, no credit card)*
 2. Profile icon → **API Keys** → **Create new API key**
 3. Copy the key — looks like `csk-...`
 
@@ -97,20 +189,22 @@ Verify the current Cerebras free lineup with GET /v1/models before class.
 
 ---
 
-## Wire it up: `.env`
+## Wire it up — `.env`
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and set two lines:
+Set two lines:
 
 ```
 TELEGRAM_BOT_TOKEN=<your BotFather token>
 AI_API_KEY=<your Cerebras key>
 ```
 
-Leave the rest as-is. Secrets live in `.env` — never in code, never in git.
+Leave the rest as-is.
+
+> Secrets live in `.env` — never in code, never in git.
 
 ---
 
@@ -121,7 +215,6 @@ make run
 ```
 
 ```
-Storage not configured — running in stateless mode (no memory, no rate limit).
 Bot @your_bot_username starting in polling mode.
 Send your bot a message on Telegram to try it out.
 ```
@@ -138,9 +231,9 @@ Message your bot. Watch the exchange appear in your terminal.
 make test
 ```
 
-- The whole test suite runs **offline** — no API keys, no network
-- The same suite runs in **GitHub Actions** on every push to your fork
-- Green checkmark on GitHub = your bot's logic still works
+- The whole suite runs **offline** — no API keys, no network
+- The **same suite** runs in GitHub Actions on every push to your fork
+- Green check on GitHub = your bot's logic still works
 
 ---
 
@@ -153,11 +246,11 @@ make test
 def cmd_start(message):
     bot.send_message(
         message.chat.id,
-        "Hello! I'm your AI assistant. Send me a message to get started...",
+        "Hello! I'm your AI assistant...",
     )
 ```
 
-Change the greeting. `Ctrl+C`, `make run` again, send `/start`.
+Change the greeting → `Ctrl+C` → `make run` → send `/start`.
 
 **You just shipped your first change.**
 
@@ -167,4 +260,4 @@ Change the greeting. `Ctrl+C`, `make run` again, send `/start`.
 
 Today the bot works on your laptop and answers as a generic assistant.
 
-**Tomorrow:** the most powerful single line in the project — the system prompt. Your bot gets a personality.
+**Tomorrow:** the most powerful single line in the project — the **system prompt**. Your bot gets a personality.
