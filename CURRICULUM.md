@@ -20,40 +20,42 @@
 
 ## Week 1 — Building a Telegram Bot with AI
 
-**Goal:** Ship a live, personalized Telegram bot backed by an LLM, deployed serverlessly on Vercel, with persistent memory and web search.
+**Goal:** Ship a live, personalized Telegram bot backed by an LLM, deployed on PythonAnywhere, with persistent SQLite memory, a passing test suite, and push-to-deploy from GitHub.
 
 **Hardware required:** Any machine (laptop is enough — no GPU needed).
 
 **Repository:** https://github.com/EdikSimonian/telegram-vercel-bot
 
+> The repo name says "vercel" for historical reasons — the template is now **PythonAnywhere-only** (Vercel, Upstash Redis, and Tavily were dropped from the codebase). Everything below matches the current repo.
+
 **Stack used in Week 1:**
-- **Telegram Bot API** — messaging interface
-- **Vercel** — serverless hosting
+- **Telegram Bot API** — messaging interface (via pyTelegramBotAPI)
 - **Flask** (Python) — webhook handler
-- **Cerebras** — LLM inference provider (free tier, no credit card)
-- **Upstash Redis** — persistent key-value memory
-- **Tavily** — web search API (free 1,000 searches/month)
-- **GitHub** — source control
+- **Cerebras** — LLM inference provider (free tier, no credit card; default model `gpt-oss-120b`)
+- **SQLite** — persistent key-value memory on disk (no external service, no signup)
+- **PythonAnywhere** — free hosting, an always-on WSGI worker
+- **GitHub** — source control, CI tests on every push, and push-to-deploy
 
 ### Week 1 — Day 1: Setup and First Message
 
 Topics and activities:
 - What is a bot? How webhooks work vs polling — the two ways Telegram talks to your code.
-- Walkthrough of the full stack: Telegram → Vercel → Flask → AI provider → reply.
-- GitHub: create an account, clone the Week 1 repo, install dependencies.
+- Walkthrough of the full stack: Telegram → Flask → Cerebras → reply (polling locally, webhook in production).
+- GitHub: create an account, **fork** the Week 1 repo (the fork is what auto-deploys on Day 5), clone it, run `make install`.
 - Telegram: create an account if needed, then message `@BotFather` to create a bot and get the bot token.
-- Cerebras: sign up at cerebras.ai, create a free API key (no credit card required).
-- Fill `.env` from the template with both the Telegram bot token and the Cerebras API key.
-- Run `python run_local.py` — send the first message and see the reply in the terminal.
-- First code edit: change the `/start` message to something personal.
+- Cerebras: sign up at cloud.cerebras.ai, create a free API key (no credit card required). *Instructor option: skip signups entirely by handing out pre-made keys to a gateway — the bot accepts any OpenAI-compatible endpoint via `AI_BASE_URL`.*
+- `cp .env.example .env`, then fill in `TELEGRAM_BOT_TOKEN` and `AI_API_KEY`.
+- Run `make run` — the bot starts in polling mode (the "stateless mode" notice is expected for now). Send the first message and see the exchange logged in the terminal.
+- Run `make test` — the suite passes offline; it's the same suite GitHub Actions runs on every push to the fork.
+- First code edit: change the `/start` message in `bot/handlers.py` to something personal.
 
 ### Week 1 — Day 2: Personality and Prompts
 
 Topics and activities:
 - What is a system prompt, and why it is the most powerful single line in the project.
-- Live experiment: change `SYSTEM_PROMPT` in `config.py`, restart, and watch the bot transform.
+- Live experiment: change `SYSTEM_PROMPT` in `bot/config.py`, restart, and watch the bot transform.
 - Build a themed bot — students pick their own persona: chef, tutor, game master, comedian, etc.
-- Model comparison: swap `AI_MODEL` between `llama3.1-8b` (fast) and `qwen-3-235b` (smarter).
+- Model comparison: set `AI_MODEL` in `.env` and swap between `gpt-oss-120b` (default) and `zai-glm-4.7`. The Cerebras free lineup rotates — the instructor confirms the current options with `GET /v1/models` before the session.
 - Pair demo: students chat with each other's personas and give feedback.
 - Update `/help` and `/about` commands to match the new bot identity.
 
@@ -61,32 +63,34 @@ Topics and activities:
 
 Topics and activities:
 - How Python decorators work — just enough to understand `@bot.message_handler`.
+- Tour of the built-in commands: `/start`, `/help`, `/reset`, `/about` — what `/reset` clears is a preview of Day 4.
 - Live-code a `/joke` command together: write the handler, update `/help`, and test it.
 - Solo build: each student picks one command to implement — `/quote`, `/fact`, `/roll`, or `/flip`.
-- Level up: make a command call the AI — build `/roast`, which injects a name into the prompt.
-- Argument parsing: how `/model main` works, and how to read words after the slash command.
+- Level up: make a command call the AI — build `/roast <name>`, which injects a name into the prompt. Argument parsing: how to read the words after a slash command. (Read the repo's `/model` handler as reference — it only registers once a second provider is configured, which happens in Week 2.)
+- Write a test for the new command in `tests/` and watch `make test` — and CI on the fork — go green.
 - Code review circle: each student reads another student's handler aloud and explains it.
 
 ### Week 1 — Day 4: Memory and State
 
 Topics and activities:
-- What is Redis? Key-value store explained with the locker analogy — user ID is the locker number, the value is what is inside.
-- Upstash: sign up at upstash.com, create a free Redis database, copy the REST URL and token into `.env`.
-- Restart the bot — conversation history now survives reboots.
-- Live-code `/remember` and `/recall` together: store a note in Redis, retrieve it later.
+- What is a key-value store? Explained with the locker analogy — user ID is the locker number, the value is what is inside.
+- Turn on persistence: set `SQLITE_PATH` in `.env`. No signup, no external service — the database file is created on first use.
+- Restart the bot — conversation history now survives reboots. Unset `SQLITE_PATH` to watch the bot degrade gracefully back to stateless mode.
+- Live-code `/remember` and `/recall` together: store a note through the bot's store, retrieve it later.
 - Solo build: full notes feature — `/remember <text>`, `/recall` to list all, `/forget` to clear.
-- Tavily: sign up at tavily.com, create a free API key (1,000 searches/month), add to `.env`.
-- Watch the bot cite sources in its replies after adding the Tavily key.
+- Production touches already in the repo: per-user rate limiting (`RATE_LIMIT`, 250 messages/day default), history trimming (`MAX_HISTORY`, 30-day expiry), the `ALLOWED_USERS` whitelist (and why it answers strangers with silence instead of a rejection), and webhook deduplication.
 - Debug challenge: the instructor silently breaks something — students find the bug using print statements.
 
 ### Week 1 — Day 5: Deploy and Ship
 
 Topics and activities:
-- What is serverless? Explained with the "kitchen that only turns on when someone orders" analogy.
-- Walk through `vercel.json` and `api/index.py` — why the webhook route exists, and why `threaded=False` matters.
-- Vercel: sign up at vercel.com, connect the GitHub account, install the Vercel CLI (`npm i -g vercel`).
-- Run `vercel --prod`, set environment variables in the Vercel dashboard, and register the Telegram webhook via `curl`.
-- Verify production: hit `/api/health`, message the live bot, and read the function logs.
+- Polling vs webhook, for real this time: locally the bot asks Telegram for updates; in production Telegram pushes to our URL. PythonAnywhere runs the same Flask app as an always-on WSGI worker.
+- Walk through `api/index.py` — the `/api/health`, `/api/webhook`, and `/api/deploy` routes, how the webhook is protected by an auto-generated secret, and why `threaded=False` matters.
+- PythonAnywhere: sign up at pythonanywhere.com (free tier), create an API token, then deploy with one command: `make deploy-pa`.
+- Webhook registration is automatic: with `WEBHOOK_URL` set, the bot registers itself with Telegram on every boot (a manual `curl` to `setWebhook` is the fallback path).
+- Verify production: hit `/api/health`, message the live bot, and read the server logs in the PA dashboard.
+- Push-to-deploy: add the two GitHub Actions secrets, change `SYSTEM_PROMPT`, `git push` — the live bot updates itself in about 3 seconds.
+- The fine print: PA free-tier apps need a monthly "renew" click in the dashboard or they auto-disable — set a reminder.
 - Final project: each student builds one original feature — translator, quiz, mood reader, summarizer, etc.
 - Demo day: everyone tests each other's live bots — the same bot from Day 1, now on the internet.
 - Preview of Week 2: the AI behind the bot — what the model actually is, and how to train one.
@@ -95,68 +99,81 @@ Topics and activities:
 
 ## Week 2 — Training a Language Model from Scratch
 
-**Goal:** Train a 350M-parameter Armenian language model end-to-end, fine-tune it into a chatbot, deploy it on HuggingFace Spaces, and connect it to the Week 1 Telegram bot.
+**Goal:** Train a 350M-parameter Armenian language model end-to-end, fine-tune it into a chatbot, deploy it on HuggingFace, and connect it to the Week 1 Telegram bot.
 
-**Hardware required:** RTX 4090 GPU.
+**Hardware required:** RTX 4090 GPU (machines stay on overnight between Day 3 and Day 4).
 
 **Repository:** https://github.com/EdikSimonian/armenian-gpt
 
 **Stack used in Week 2:**
 - **HuggingFace** — model hub, dataset hosting, Spaces deployment
-- **BPE tokenizer** — 16K vocabulary, 8.3B tokens, 16 parallel workers
-- **Armenian corpus** — 63 GB clean dataset, 12 sources
-- **xlarge model** — 350M parameters
-- **Fine-tuning dataset** — 29K Armenian question-and-answer pairs
+- **BPE tokenizer** — 16K vocabulary in the published pre-tokenized bins (~8.3B tokens); the repo's v2 pipeline defaults to 32K if you tokenize from scratch. Encoding parallelized across 16 workers.
+- **Armenian corpus** — 63 GB clean dataset, 12 sources, hosted as a **private** HuggingFace dataset (read access required)
+- **xlarge model** — 350M parameters, ~36K steps, ~8 hours on the RTX 4090
+- **Fine-tuning dataset** — ~29K raw Armenian question-and-answer pairs, quality-filtered to ~17K for training
 - **Chat tokens** — `<|user|>`, `<|assistant|>`, `<|end|>`
-- **Telegram bot from Week 1** — used as the frontend for the trained model
+- **Telegram bot from Week 1** — used as the frontend for the trained model (via its second-provider slot)
 
 ### Week 2 — Day 1: Setup and Overview
 
 Topics and activities:
 - What is a language model, and how does it work?
 - Walk through the full pipeline: download → clean → tokenize → train → fine-tune → deploy.
-- Clone the Week 2 repo, install dependencies, set up HuggingFace accounts.
-- Train a tiny model end-to-end as a demo (~2 minutes).
-- Compare tiny model output to the live demo — why the difference matters.
+- Clone the Week 2 repo, install dependencies, set up HuggingFace accounts. The corpus is a private HF dataset — the instructor grants each account read access (or distributes a shared read token), and everyone sets `HF_TOKEN`.
+- Train a tiny model end-to-end as a demo (~2 minutes, using the pre-tokenized data already staged on the machines).
+- Compare tiny model output to the live demo Space — why the difference matters.
 
 ### Week 2 — Day 2: Data and Tokenization
 
 Topics and activities:
-- Download the clean Armenian corpus from HuggingFace (63 GB).
-- What is in the data: 12 sources, how it was cleaned, why data quality matters.
+- What is in the data: 12 sources, how it was cleaned and near-deduplicated, why data quality matters.
 - How tokenization works: characters vs BPE, and why computers need numbers.
-- Run the BPE tokenizer (16K vocabulary, 8.3B tokens, 16 parallel workers).
-- Hands-on: encode Armenian words and explore the vocabulary.
+- Hands-on: train a BPE tokenizer on a small text sample, then encode Armenian words and explore the real tokenizer's vocabulary.
+- For the real run, download the pre-tokenized corpus (`python 1_download.py --tokenized-only`, ~10 GB) — re-tokenizing all 63 GB takes hours, and 63 GB per student would saturate the venue network.
+- The full reproduce-it-at-home path (63 GB corpus download, cleaning, 16-worker tokenization) is documented in the repo.
 
 ### Week 2 — Day 3: Training (Part 1)
 
 Topics and activities:
-- Start xlarge training (350M parameters).
+- Start xlarge training (350M parameters, ~36K steps, ~8 hours on the RTX 4090).
 - What happens each step: batches, forward pass, loss, backward pass, weight update.
-- Key concepts: loss, learning rate, perplexity, checkpoints.
+- Key concepts: loss, learning rate, perplexity, checkpoints (saved every 1000 steps).
 - Compare early checkpoints — watch the model go from gibberish to real Armenian.
-- Practice pause and resume (`Ctrl+C`, `--resume_from`).
-- Pause training at the end of the day.
+- Practice pause and resume: `Ctrl+C` saves a checkpoint on the way out, `--resume_from` continues exactly where it left off — same step, same learning-rate schedule.
+- Leave training running overnight — it will not finish within class hours. (Fallback if the machines can't stay on: train `large` — 85M parameters, ~3 hours — and finish the same day.)
 
 ### Week 2 — Day 4: Training (Part 2)
 
 Topics and activities:
-- Resume training from yesterday's checkpoint.
+- Check the overnight run: how far did it get, what does the loss curve look like, what do the latest samples read like.
 - Model architecture: embeddings, attention, feed-forward layers, why depth matters.
 - Understanding loss curves: overfitting, underfitting, model capacity.
 - Temperature and sampling: how the same model can be creative or conservative.
-- Training completes — generate text and compare to Day 1's tiny model.
+- Measure, don't vibe: score checkpoints with `eval_bpb.py` (bits-per-byte) and `eval_armbench.py` (Armenian multiple-choice accuracy).
+- Training completes — generate text with `5_generate.py` and compare to Day 1's tiny model.
 
 ### Week 2 — Day 5: Fine-tuning and Deployment
 
 Topics and activities:
 - Why fine-tuning: autocomplete vs question-answering.
 - Chat tokens: `<|user|>`, `<|assistant|>`, `<|end|>`.
-- Run fine-tuning on 29K Armenian Q&A pairs (~1 hour).
-- Test the chatbot locally.
-- Upload the model to HuggingFace and deploy it as a Space.
-- Connect the Space to the Telegram bot from Week 1.
-- Demo day: everyone tests each other's bots.
+- Run fine-tuning on the quality-filtered Armenian Q&A set (~17K pairs from ~29K raw) — a few hundred steps, well under an hour; `chat_best.pt` keeps the checkpoint with the best validation loss.
+- Test the chatbot locally with `8_chat.py`.
+- Upload the model to HuggingFace (`python 7_deploy.py --repo <username>/armgpt`) and deploy the Gradio demo Space.
+- Connect the model to the Week 1 Telegram bot: the bot has a second-provider slot — set `ARMGPT_BASE_URL` to any OpenAI-compatible endpoint and switch with `/model armgpt`. The HF Space is the public demo UI; the bot needs the OpenAI-compatible endpoint (the reference deployment runs on Modal). Teaching moment: the provider sends only the latest message — no system prompt, no memory — sized for a small self-trained model.
+- Demo day: everyone tests each other's bots, running locally via `make run` (PythonAnywhere's free-tier outbound whitelist blocks the model endpoint, so the finale runs on laptops).
+
+---
+
+## Instructor Pre-Workshop Checklist
+
+- Verify the Cerebras free-tier model lineup (`GET /v1/models`) and update Day 2's model names if the lineup rotated.
+- Decide the Week 1 key strategy: individual Cerebras signups, or pre-made gateway keys handed out on Day 1 (any OpenAI-compatible endpoint works via `AI_BASE_URL`).
+- Grant each student's HuggingFace account read access to the private corpus dataset, or prepare a shared read token.
+- Pre-stage the pre-tokenized corpus (~10 GB, `python 1_download.py --tokenized-only`) on every GPU machine — this also enables Day 1's two-minute tiny-model demo.
+- Confirm the GPU machines can run unattended overnight between Day 3 and Day 4; otherwise plan for the `large` preset.
+- Confirm the OpenAI-compatible model endpoint for the Week 2 finale is up, and that demo-day bots will run locally (PythonAnywhere free tier cannot reach it).
+- After the workshop, remind students: PythonAnywhere free apps need a monthly renewal click or they auto-disable.
 
 ---
 
@@ -172,31 +189,34 @@ A: In Armenia — Week 1 runs in both Gyumri and Yerevan (identical content). We
 A: No. Any laptop works for Week 1. Week 2 requires an RTX 4090.
 
 **Q: Do I need to pay for any services?**
-A: No. Every service used in Week 1 has a free tier: Cerebras (no credit card), Upstash Redis (free), Tavily (1,000 searches/month free), Vercel (free hobby plan), Telegram (free), GitHub (free).
+A: No. Every service used has a free tier: Cerebras (1M tokens/day, 30 requests/min, no credit card), PythonAnywhere (free Beginner tier — needs a monthly renewal click), Telegram (free), GitHub (free), HuggingFace (free).
+
+**Q: Are there age requirements for the services?**
+A: The services used are generally 13+ (16+ in the EU/UK for some, due to GDPR). Younger students do the signups together with a parent or teacher, who creates the accounts and shares the keys — all of the coding, testing, and deployment is still done by the student.
 
 **Q: What programming language is used?**
-A: Python for the bot (Flask) and Python for model training. A small amount of JSON config for Vercel.
+A: Python for the bot (Flask) and Python for model training, plus a Makefile and one GitHub Actions workflow. No JavaScript or Node required.
 
 **Q: Which AI models are used in Week 1?**
-A: `llama3.1-8b` (fast) and `qwen-3-235b` (smarter), served via Cerebras.
+A: `gpt-oss-120b` (default) and `zai-glm-4.7`, served via Cerebras. The free lineup rotates, so the instructor confirms the current options before each session.
 
 **Q: How big is the model trained in Week 2?**
-A: 350 million parameters (referred to as "xlarge" in the repo).
+A: 350 million parameters (referred to as "xlarge" in the repo) — about 8 hours of training on the workshop's RTX 4090.
 
 **Q: How big is the training dataset?**
-A: 63 GB of clean Armenian text from 12 sources, tokenized into 8.3 billion tokens with a 16K BPE vocabulary.
+A: 63 GB of clean Armenian text from 12 sources, tokenized into ~8.3 billion tokens (16K-vocabulary BPE in the published bins; the repo's v2 pipeline defaults to a 32K vocabulary).
 
 **Q: How long does fine-tuning take?**
-A: About 1 hour on an RTX 4090, using 29,000 Armenian question-and-answer pairs.
+A: Well under an hour on the RTX 4090 — a few hundred steps over ~17K quality-filtered question-and-answer pairs (from ~29K raw).
 
 **Q: Where is the final Week 2 model deployed?**
-A: Uploaded to HuggingFace and deployed as a HuggingFace Space, then connected back to the Telegram bot built in Week 1.
+A: Uploaded to HuggingFace and deployed as a HuggingFace Space (the public demo UI), and served through an OpenAI-compatible endpoint that the Week 1 Telegram bot connects to via its second-provider slot.
 
 **Q: What gets built by the end of Week 1?**
-A: A live, deployed Telegram bot on Vercel with a custom persona, custom slash commands, persistent Redis memory, and Tavily-powered web search.
+A: A live Telegram bot on PythonAnywhere with a custom persona, custom slash commands, persistent SQLite memory, rate limiting, a passing test suite, and push-to-deploy from GitHub.
 
 **Q: What gets built by the end of Week 2?**
-A: A from-scratch Armenian language model, fine-tuned into a chatbot, deployed on HuggingFace Spaces, and wired into the Telegram bot from Week 1.
+A: A from-scratch Armenian language model, fine-tuned into a chatbot, deployed on HuggingFace, and wired into the Telegram bot from Week 1.
 
 ---
 
@@ -204,12 +224,13 @@ A: A from-scratch Armenian language model, fine-tuned into a chatbot, deployed o
 
 - **Webhook** — Telegram sends an HTTP request to your server when a user messages the bot. Used in production.
 - **Polling** — Your server repeatedly asks Telegram "any new messages?". Used for local development.
-- **System prompt** — The instruction given to an LLM that defines its persona and behavior. Lives in `SYSTEM_PROMPT` in `config.py`.
-- **Serverless** — Code that only runs when a request arrives. Used on Vercel. Analogy: a kitchen that only turns on when someone orders.
-- **Redis** — In-memory key-value store used for persistent chat history and notes. Provided by Upstash.
-- **BPE (Byte Pair Encoding)** — Tokenization algorithm that splits text into subword units. Used with a 16K vocabulary in Week 2.
+- **System prompt** — The instruction given to an LLM that defines its persona and behavior. Lives in `SYSTEM_PROMPT` in `bot/config.py`.
+- **WSGI worker** — The always-on Python process that hosts the Flask app on PythonAnywhere. Telegram's webhook requests land on it.
+- **SQLite** — A file-based database the bot uses as a key-value store (with expiry) for chat history, notes, rate limits, and dedupe. No external service needed.
+- **BPE (Byte Pair Encoding)** — Tokenization algorithm that splits text into subword units. Week 2 uses a 16K vocabulary (the repo's v2 pipeline defaults to 32K).
 - **Checkpoint** — A saved snapshot of model weights during training. Lets you pause and resume.
 - **Perplexity** — A metric for how well a language model predicts text. Lower is better.
+- **Base model** — A model trained only to continue text (autocomplete). It has no chat format and no memory until it is fine-tuned.
 - **Fine-tuning** — Taking a pretrained language model and training it further on task-specific data (e.g., Q&A pairs) to change its behavior from autocomplete to chat.
 - **Temperature** — A sampling parameter that controls randomness. Low = conservative, high = creative.
 - **HuggingFace Space** — A hosted app on HuggingFace that serves a model via a web interface or API.
