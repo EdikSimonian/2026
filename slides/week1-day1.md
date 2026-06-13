@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -154,8 +167,8 @@ Two ways Telegram talks to your code:
 3. Clone your fork and install:
 
 ```bash
-git clone https://github.com/<your-username>/telegram-vercel-bot.git
-cd telegram-vercel-bot
+git clone https://github.com/<your-username>/telegram-pythonanywhere-bot.git
+cd telegram-pythonanywhere-bot
 make install
 ```
 
