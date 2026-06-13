@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 2 · Day 2 — Data and Tokenization'
+footer: 'Week 2 · Day 2 · Data and Tokenization'
 ---
 
 <style>
@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -96,7 +109,7 @@ section.title p, section.title strong {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cover slide — white text over a photo in normal flow (e.g. a closing slide) */
+/* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
   color: #fff;
@@ -123,13 +136,13 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 2 — Day 2: Data and Tokenization
+## Week 2, Day 2: Data and Tokenization
 
 **Edik Simonian, Summer 2026**
 
 ---
 
-## 63 GB of Armenian — from where?
+## 63 GB of Armenian: from where?
 
 **12 sources**, one cleaned corpus:
 
@@ -137,7 +150,7 @@ section.cover p, section.cover strong, section.cover em {
 - CC-100 · HPLT 3.0 · CC-News · CulturaX · mC4 · Glot500
 - ARLIS · FineTranslations
 
-Encyclopedias, news, books, the open web — the model will only ever know what's in here.
+Encyclopedias, news, books, the open web: the model will only ever know what's in here.
 
 ---
 
@@ -145,9 +158,9 @@ Encyclopedias, news, books, the open web — the model will only ever know what'
 
 Before training, the corpus was:
 
-- **Cleaned** — boilerplate, menus, broken encoding stripped out
-- **Deduplicated** — exact copies *and* near-copies (web text repeats a lot)
-- **Prioritized** — high-quality sources first when there's overlap
+- **Cleaned**: boilerplate, menus, broken encoding stripped out
+- **Deduplicated**: exact copies *and* near-copies (web text repeats a lot)
+- **Prioritized**: high-quality sources first when there's overlap
 
 A model trained on raw internet learns raw internet. Data work is unglamorous and decisive.
 
@@ -155,14 +168,14 @@ A model trained on raw internet learns raw internet. Data work is unglamorous an
 
 ## Why tokens? Computers eat numbers
 
-- A model can't read "Բարև" — it needs numbers
+- A model can't read "Բարև"; it needs numbers
 - **Character-level**: tiny vocabulary, but every word becomes a long sequence
 - **BPE (Byte Pair Encoding)**: merge frequent pairs into subword pieces
   - `Հայաստան` → `Հայ` + `աստան` *(illustrative)*
   - Common words = 1 token, rare words = a few pieces
 - Our corpus → **~8.3 billion BPE tokens**, 16K-piece vocabulary
 
-<!-- The repo's v2 pipeline defaults to a 32K vocab if you re-tokenize from scratch — the published pre-tokenized bins are 16K. -->
+<!-- The repo's v2 pipeline defaults to a 32K vocab if you re-tokenize from scratch; the published pre-tokenized bins are 16K. -->
 
 ---
 
@@ -177,16 +190,16 @@ The vocabulary is a mirror of the training data.
 
 ---
 
-## Getting the real data — the smart way
+## Getting the real data, the smart way
 
 ```bash
 python 1_download.py --tokenized-only     # ~10 GB
 ```
 
-- Pre-tokenized `train_bpe.bin` + `val_bpe.bin` + tokenizer — ready to train
+- Pre-tokenized `train_bpe.bin` + `val_bpe.bin` + tokenizer: ready to train
 - Re-tokenizing 63 GB yourself: **hours** (even with 16 parallel workers)
 - 63 GB × everyone in this room: the venue wifi votes no
-- The full from-scratch path is in the repo README — reproduce it at home
+- The full from-scratch path is in the repo README: reproduce it at home
 
 <!-- Data is already pre-staged on the GPU machines; this command is the "how it got there". -->
 
@@ -196,4 +209,4 @@ python 1_download.py --tokenized-only     # ~10 GB
 
 Today: the corpus, the cleaning, and how text becomes numbers.
 
-**Tomorrow morning we press the button.** 350M parameters start learning Armenian — and keep learning while we sleep.
+**Tomorrow morning we press the button.** 350M parameters start learning Armenian, and keep learning while we sleep.

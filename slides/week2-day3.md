@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 2 · Day 3 — Training, Part 1'
+footer: 'Week 2 · Day 3 · Training, Part 1'
 ---
 
 <style>
@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -96,7 +109,7 @@ section.title p, section.title strong {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cover slide — white text over a photo in normal flow (e.g. a closing slide) */
+/* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
   color: #fff;
@@ -123,7 +136,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 2 — Day 3: Training, Part 1
+## Week 2, Day 3: Training, Part 1
 
 **Edik Simonian, Summer 2026**
 
@@ -136,7 +149,7 @@ python 4_train.py --preset xlarge --tokenizer bpe
 ```
 
 - **350M parameters · 36K steps · ~8 hours on this GPU**
-- It will *not* finish during class — that's by design
+- It will *not* finish during class; that's by design
 - First milestone: watch the loss start falling
 
 We start it **now**, then learn what it's doing while it does it.
@@ -145,11 +158,11 @@ We start it **now**, then learn what it's doing while it does it.
 
 ## One training step, slow motion
 
-1. **Batch** — grab a chunk of tokenized text
-2. **Forward pass** — model predicts every next token
-3. **Loss** — how wrong were the predictions? One number.
-4. **Backward pass** — trace every weight's share of the blame
-5. **Update** — nudge all 350M weights a tiny step downhill
+1. **Batch**: grab a chunk of tokenized text
+2. **Forward pass**: model predicts every next token
+3. **Loss**: how wrong were the predictions? One number.
+4. **Backward pass**: trace every weight's share of the blame
+5. **Update**: nudge all 350M weights a tiny step downhill
 
 Repeat 36,000 times. That's the whole secret.
 
@@ -157,10 +170,10 @@ Repeat 36,000 times. That's the whole secret.
 
 ## Words you'll see scroll by
 
-- **Loss** — wrongness. Down = learning.
-- **Learning rate** — step size downhill. Too big: chaos. Too small: forever.
-- **Perplexity** — "how many tokens was the model torn between?" Lower is better.
-- **Checkpoint** — full snapshot of the weights, saved **every 1000 steps**
+- **Loss**: wrongness. Down = learning.
+- **Learning rate**: step size downhill. Too big: chaos. Too small: forever.
+- **Perplexity**: "how many tokens was the model torn between?" Lower is better.
+- **Checkpoint**: full snapshot of the weights, saved **every 1000 steps**
 
 ---
 
@@ -168,16 +181,16 @@ Repeat 36,000 times. That's the whole secret.
 
 Generate from checkpoints as they appear:
 
-- step 1000 — character soup
-- step 5000 — Armenian-shaped words
-- step 20000 — grammar emerges
-- step 36000 — fluent continuation *(tomorrow)*
+- step 1000: character soup
+- step 5000: Armenian-shaped words
+- step 20000: grammar emerges
+- step 36000: fluent continuation *(tomorrow)*
 
-Keep your favorite "baby pictures" — compare on Friday.
+Keep your favorite "baby pictures" to compare on Friday.
 
 ---
 
-## Pause and resume — practice now
+## Pause and resume: practice now
 
 ```bash
 # Ctrl+C  →  saves a checkpoint on the way out
@@ -187,14 +200,14 @@ python 4_train.py --preset xlarge --tokenizer bpe \
 ```
 
 - Checkpoint = weights + optimizer + step counter + schedule
-- Resume continues **exactly** where it stopped — nothing lost
+- Resume continues **exactly** where it stopped: nothing lost
 - This is your insurance against power cuts, crashes, and impatience
 
 ---
 
 ## Tonight
 
-- Machines **stay on, training** — do not shut down 🌙
+- Machines **stay on, training**: do not shut down 🌙
 - ~8 hours of GPU time happens while you sleep
 - Tomorrow morning: a model that's been studying all night
 
@@ -209,4 +222,4 @@ and finish same-day. Decide before students leave.
 
 Today: training started, and you can read its vital signs.
 
-**Tomorrow:** what's actually inside — attention, layers, loss curves — and your model's first real report card.
+**Tomorrow:** what's actually inside (attention, layers, loss curves) and your model's first real report card.

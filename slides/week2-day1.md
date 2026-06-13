@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 2 · Day 1 — Setup and Overview'
+footer: 'Week 2 · Day 1 · Setup and Overview'
 ---
 
 <style>
@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -96,7 +109,7 @@ section.title p, section.title strong {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cover slide — white text over a photo in normal flow (e.g. a closing slide) */
+/* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
   color: #fff;
@@ -123,7 +136,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 2 — Day 1: Setup and Overview
+## Week 2, Day 1: Setup and Overview
 
 **Edik Simonian, Summer 2026**
 
@@ -132,7 +145,7 @@ section.cover p, section.cover strong, section.cover em {
 ## What you'll build this week
 
 - A **350-million-parameter Armenian language model**
-- Trained **from scratch** — no pretrained weights, no shortcuts
+- Trained **from scratch**: no pretrained weights, no shortcuts
 - Fine-tuned into a **chatbot**
 - Deployed on **HuggingFace**
 - Plugged into **your Week 1 Telegram bot**
@@ -146,13 +159,13 @@ Last week you rented a brain. This week you grow one.
 - A function that answers one question: **"what token comes next?"**
 - Trained by reading text and predicting the next word, billions of times
 - Wrong guess → adjust the weights a tiny bit → repeat
-- Everything else — chat, translation, jokes — falls out of that one skill
+- Everything else (chat, translation, jokes) falls out of that one skill
 
 GPT, Claude, Llama: same core idea, more zeros in the parameter count.
 
 ---
 
-## The pipeline — and the repo
+## The pipeline and the repo
 
 ```
 1_download.py    get the corpus (or pre-tokenized data)
@@ -185,7 +198,7 @@ export HF_TOKEN=hf_...
 ```
 
 <!--
-The corpus dataset is PRIVATE — grant each student's HF account read
+The corpus dataset is PRIVATE; grant each student's HF account read
 access beforehand, or distribute a shared read token. Data is already
 pre-staged on the GPU machines.
 -->
@@ -239,4 +252,4 @@ The *only* differences: *size* and *time*. That's the lesson of the week.
 
 Today: the pipeline end-to-end, and a tiny model that proves it runs.
 
-**Tomorrow:** the fuel. 63 GB of Armenian text — where it came from, and how text becomes numbers.
+**Tomorrow:** the fuel. 63 GB of Armenian text: where it came from, and how text becomes numbers.

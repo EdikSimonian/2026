@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 5 — Deploy and Ship'
+footer: 'Week 1 · Day 5 · Deploy and Ship'
 ---
 
 <style>
@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -96,7 +109,7 @@ section.title p, section.title strong {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cover slide — white text over a photo in normal flow (e.g. a closing slide) */
+/* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
   color: #fff;
@@ -123,7 +136,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1 — Day 5: Deploy and Ship
+## Week 1, Day 5: Deploy and Ship
 
 **Edik Simonian, Summer 2026**
 
@@ -131,10 +144,10 @@ section.cover p, section.cover strong, section.cover em {
 
 ## From polling to webhook
 
-- All week: **polling** — your laptop asks Telegram for updates
-- Production: **webhook** — Telegram pushes to your server's URL
+- All week: **polling**, your laptop asks Telegram for updates
+- Production: **webhook**, Telegram pushes to your server's URL
 - PythonAnywhere runs the **same Flask app** as an always-on worker
-- Same code, same `.env` idea — different delivery
+- Same code, same `.env` idea: different delivery
 
 Today your bot stops needing you.
 
@@ -148,12 +161,12 @@ Today your bot stops needing you.
 | `/api/webhook` | Where Telegram delivers messages |
 | `/api/deploy` | Pulls new code on push (we'll wire this up) |
 
-- The webhook checks a **secret token** — forged requests get 403. The bot generates and registers it itself on first boot.
-- `threaded=False` in `bot/clients.py` — handlers must finish in the request, or the platform may kill them mid-reply.
+- The webhook checks a **secret token**: forged requests get 403. The bot generates and registers it itself on first boot.
+- `threaded=False` in `bot/clients.py`: handlers must finish in the request, or the platform may kill them mid-reply.
 
 ---
 
-## Deploy — one command
+## Deploy: one command
 
 1. Sign up at **pythonanywhere.com** (free Beginner tier)
 2. Create an API token: *Account → API token*
@@ -170,13 +183,13 @@ PA_API_TOKEN=<the token>
 make deploy-pa
 ```
 
-<!-- The script pauses once and asks you to open one URL in the browser — PA quirk. -->
+<!-- The script pauses once and asks you to open one URL in the browser; a PA quirk. -->
 
 ---
 
 ## What just happened
 
-The script created the web app, cloned **your fork**, built the venv, uploaded a production `.env` — including:
+The script created the web app, cloned **your fork**, built the venv, uploaded a production `.env`, including:
 
 ```
 SQLITE_PATH=/home/<you>/bot.db
@@ -190,15 +203,15 @@ WEBHOOK_URL=https://<you>.pythonanywhere.com/api/webhook
 ## Verify like an engineer
 
 1. `https://<you>.pythonanywhere.com/api/health` → `OK`
-2. Message your bot — the reply now comes from the server
+2. Message your bot: the reply now comes from the server
 3. **Close your laptop. Message it again.** 🎉
-4. Something wrong? *Web tab → error log* — read the traceback
+4. Something wrong? *Web tab → error log*: read the traceback
 
 ---
 
 ## Push-to-deploy
 
-One-time setup on your fork — *Settings → Secrets → Actions*:
+One-time setup on your fork, in *Settings → Secrets → Actions*:
 
 | Secret | Value |
 |---|---|
@@ -217,18 +230,18 @@ git commit -am "New personality" && git push
 
 ## The fine print ⚠️
 
-- PA free tier: click **"Run until 3 months from today"**-style renewal **every month** — or the app auto-disables
+- PA free tier: click **"Run until 3 months from today"**-style renewal **every month**, or the app auto-disables
 - PA emails you a week before. Set a phone reminder anyway.
-- Free tier limits outbound internet to a whitelist — Telegram and Cerebras are on it
+- Free tier limits outbound internet to a whitelist: Telegram and Cerebras are on it
 
 ---
 
-## Final project — ship one original feature
+## Final project: ship one original feature
 
-- 🌍 Translator — Armenian ↔ English on demand
-- ❓ Quiz master — asks, scores, keeps streaks (you have a store!)
-- 🎭 Mood reader — guesses the mood of a message
-- 📝 Summarizer — paste a wall of text, get three lines
+- 🌍 Translator: Armenian ↔ English on demand
+- ❓ Quiz master: asks, scores, keeps streaks (you have a store!)
+- 🎭 Mood reader: guesses the mood of a message
+- 📝 Summarizer: paste a wall of text, get three lines
 
 Or your own idea. It must be **live on your deployed bot** by demo time.
 
@@ -237,10 +250,10 @@ Or your own idea. It must be **live on your deployed bot** by demo time.
 ## Demo day
 
 1. Post your bot's username for the room
-2. Try everyone's bot — find their feature
+2. Try everyone's bot, find their feature
 3. Vote: funniest persona, most useful feature, best surprise
 
-**Same bot as Tuesday morning — now it lives on the internet.**
+**Same bot as Tuesday morning, now it lives on the internet.**
 
 ---
 
@@ -248,4 +261,4 @@ Or your own idea. It must be **live on your deployed bot** by demo time.
 
 Your bot's brain is someone else's model behind an API.
 
-**Week 2: we train our own.** 63 GB of Armenian text, one GPU, a 350-million-parameter model — built from scratch, fine-tuned to chat, and plugged into *this* bot.
+**Week 2: we train our own.** 63 GB of Armenian text, one GPU, a 350-million-parameter model, built from scratch, fine-tuned to chat, and plugged into *this* bot.

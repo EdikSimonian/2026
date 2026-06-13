@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 2 — Personality and Prompts'
+footer: 'Week 1 · Day 2 · Personality and Prompts'
 ---
 
 <style>
@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -96,7 +109,7 @@ section.title p, section.title strong {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cover slide — white text over a photo in normal flow (e.g. a closing slide) */
+/* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
   color: #fff;
@@ -123,7 +136,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1 — Day 2: Personality and Prompts
+## Week 1, Day 2: Personality and Prompts
 
 **Edik Simonian, Summer 2026**
 
@@ -132,7 +145,7 @@ section.cover p, section.cover strong, section.cover em {
 ## What is a system prompt?
 
 - An instruction the model sees **before every conversation**
-- The user never sees it — but every reply obeys it
+- The user never sees it, but every reply obeys it
 - It defines: who the bot is, how it talks, what it refuses to do
 - **The most powerful single line in this project**
 
@@ -161,12 +174,12 @@ Restart. Ask it anything.
 
 ## Build your persona
 
-Pick one — or invent your own:
+Pick one, or invent your own:
 
-- 👨‍🍳 **Chef** — answers everything with a recipe angle
-- 📚 **Tutor** — explains step by step, asks questions back
-- 🎲 **Game master** — turns the chat into an adventure
-- 🎤 **Comedian** — can't help making it funny
+- 👨‍🍳 **Chef**: answers everything with a recipe angle
+- 📚 **Tutor**: explains step by step, asks questions back
+- 🎲 **Game master**: turns the chat into an adventure
+- 🎤 **Comedian**: can't help making it funny
 
 Write 3–5 sentences: who the bot is, how it speaks, one thing it always does, one thing it never does.
 
@@ -174,18 +187,18 @@ Write 3–5 sentences: who the bot is, how it speaks, one thing it always does, 
 
 ## Swap the brain
 
-The model is an environment variable — `.env`:
+The model is an environment variable in `.env`:
 
 ```
 AI_MODEL=gpt-oss-120b      # default
 AI_MODEL=zai-glm-4.7       # try this one too
 ```
 
-- Same persona, different model — what changes?
+- Same persona, different model: what changes?
 - Speed vs depth: time the answers, compare the styles
 
 <!--
-Cerebras rotates its free lineup — verify with GET /v1/models before
+Cerebras rotates its free lineup; verify with GET /v1/models before
 class and update these names on the slide if needed.
 -->
 
@@ -206,8 +219,8 @@ The faster the other person can guess your prompt, the better it is.
 
 Two commands still describe the *old* bot:
 
-- `/help` — should list what **your** bot does, in its voice
-- `/about` — should introduce **your** persona
+- `/help`: should list what **your** bot does, in its voice
+- `/about`: should introduce **your** persona
 
 Both live in `bot/handlers.py`. Edit them like you edited `/start` yesterday.
 
@@ -215,6 +228,6 @@ Both live in `bot/handlers.py`. Edit them like you edited `/start` yesterday.
 
 ## Today → Tomorrow
 
-Today your bot has a personality — defined in one string.
+Today your bot has a personality, defined in one string.
 
-**Tomorrow:** new powers. You'll write your own slash commands — including one that calls the AI itself.
+**Tomorrow:** new powers. You'll write your own slash commands, including one that calls the AI itself.

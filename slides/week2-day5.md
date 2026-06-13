@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 2 · Day 5 — Fine-tuning and Deployment'
+footer: 'Week 2 · Day 5 · Fine-tuning and Deployment'
 ---
 
 <style>
@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -96,7 +109,7 @@ section.title p, section.title strong {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cover slide — white text over a photo in normal flow (e.g. a closing slide) */
+/* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
   color: #fff;
@@ -123,7 +136,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 2 — Day 5: Fine-tuning and Deployment
+## Week 2, Day 5: Fine-tuning and Deployment
 
 **Edik Simonian, Summer 2026**
 
@@ -133,7 +146,7 @@ section.cover p, section.cover strong, section.cover em {
 
 Ask it: *"Ո՞րն է Հայաստանի մայրաքաղաքը"*
 
-It might **continue** with more questions instead of answering — because continuing text is *all it knows*.
+It might **continue** with more questions instead of answering, because continuing text is *all it knows*.
 
 - **Base model** = autocomplete
 - **Chatbot** = answers when asked
@@ -142,7 +155,7 @@ The bridge between them is **fine-tuning**.
 
 ---
 
-## Chat tokens — teaching it turns
+## Chat tokens: teaching it turns
 
 Wrap every example in special tokens *(format sketch)*:
 
@@ -153,7 +166,7 @@ Wrap every example in special tokens *(format sketch)*:
 
 The model learns the *pattern*: after `<|assistant|>` comes **an answer**, and `<|end|>` means stop.
 
-Three new tokens — a whole new behavior.
+Three new tokens, a whole new behavior.
 
 ---
 
@@ -167,7 +180,7 @@ python 6_finetune.py --tokenizer bpe      # loads checkpoints/final.pt
 ```
 
 - ~29K raw Q&A pairs → **~17K** after quality filtering
-- A few hundred steps — **well under an hour**
+- A few hundred steps: **well under an hour**
 - `chat_best.pt` keeps whichever step had the best validation loss
 
 ---
@@ -178,7 +191,7 @@ python 6_finetune.py --tokenizer bpe      # loads checkpoints/final.pt
 python 8_chat.py
 ```
 
-- Ask it the capital question again — **now it answers**
+- Ask it the capital question again: **now it answers**
 - Try: a factual question, a creative request, something it can't know
 - Be fair: it's 350M parameters, not Claude. Celebrate what works.
 
@@ -191,14 +204,14 @@ python 7_deploy.py --repo <your-username>/armgpt
 ```
 
 - Uploads weights + tokenizer + model card to HuggingFace
-- The Gradio demo Space (like `edisimon/armgpt-demo`) serves it on CPU — a public URL anyone can try
+- The Gradio demo Space (like `edisimon/armgpt-demo`) serves it on CPU, a public URL anyone can try
 - Your model now has a home on the internet
 
 ---
 
 ## The full circle: into your Week 1 bot
 
-The bot has a second-provider slot — any **OpenAI-compatible** endpoint:
+The bot has a second-provider slot for any **OpenAI-compatible** endpoint:
 
 ```
 ARMGPT_BASE_URL=https://<your-endpoint>/v1
@@ -208,20 +221,20 @@ ARMGPT_MODEL=armgpt
 
 Restart → a `/model` command appears → `/model armgpt` ⇄ `/model main`
 
-- The provider sends **only your latest message** — no system prompt, no memory — sized for a small self-trained model
-- *(The Space is the demo UI; the bot needs the API endpoint — reference setup runs on Modal)*
+- The provider sends **only your latest message** (no system prompt, no memory), sized for a small self-trained model
+- *(The Space is the demo UI; the bot needs the API endpoint, reference setup runs on Modal)*
 
 ---
 
-## Demo day — run it locally
+## Demo day: run it locally
 
 ```bash
 make run        # in your Week 1 bot repo
 ```
 
-- PythonAnywhere's free tier can't reach the model endpoint (outbound whitelist) — today the bots run on laptops
+- PythonAnywhere's free tier can't reach the model endpoint (outbound whitelist), so today the bots run on laptops
 - Try everyone's bot: `/model armgpt`, same question to both brains
-- One question, two answers: a 350M model **you trained**, and a frontier model — side by side in *your* bot
+- One question, two answers: a 350M model **you trained**, and a frontier model, side by side in *your* bot
 
 ---
 
@@ -232,8 +245,8 @@ make run        # in your Week 1 bot repo
 
 # Two weeks, full stack
 
-**Week 1** — you shipped a bot to the internet.
-**Week 2** — you built the intelligence inside one.
+**Week 1**: you shipped a bot to the internet.
+**Week 2**: you built the intelligence inside one.
 
 Code → Train → Deploy. You've now done all three.
 

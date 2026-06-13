@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 3 — New Commands'
+footer: 'Week 1 · Day 3 · New Commands'
 ---
 
 <style>
@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -96,7 +109,7 @@ section.title p, section.title strong {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cover slide — white text over a photo in normal flow (e.g. a closing slide) */
+/* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
   color: #fff;
@@ -123,7 +136,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1 — Day 3: New Commands
+## Week 1, Day 3: New Commands
 
 **Edik Simonian, Summer 2026**
 
@@ -139,12 +152,12 @@ def cmd_start(message):
 
 - A decorator **registers** your function with the bot
 - *"When a message matches `/start`, call this function"*
-- You don't call `cmd_start` yourself — the bot does
+- You don't call `cmd_start` yourself; the bot does
 - That's all you need to know to add any command
 
 ---
 
-## The built-ins — read before you write
+## The built-ins: read before you write
 
 | Command | What it does |
 |---|---|
@@ -153,7 +166,7 @@ def cmd_start(message):
 | `/reset` | Clears your conversation history |
 | `/about` | Model, storage, and hosting info |
 
-`/reset` clears *history* — wait, what history? **That's tomorrow.**
+`/reset` clears *history*. Wait, what history? **That's tomorrow.**
 
 ---
 
@@ -174,20 +187,77 @@ def cmd_joke(message):
 
 ---
 
-## Your turn — pick one
+## Meet Claude Code
 
-- `/quote` — a random quote from a list you write
-- `/fact` — a surprising fact (keep a few in a Python list)
-- `/roll` — a dice roll (`random.randint` is your friend)
-- `/flip` — heads or tails
+An **AI pair-programmer** that lives in your terminal.
+
+- Reads your project: the real `bot/` files
+- Writes code, runs commands, explains errors
+- You ask in plain English; it edits and tests
+
+You just built `/joke` by hand. Now meet the tool that helps you build the next one, *with you in charge*.
+
+---
+
+## Connect it to the workshop AI
+
+**1. Install it** (once):
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+**2. Point it at the workshop gateway** (your key is handed out in class):
+
+```bash
+export ANTHROPIC_BASE_URL="https://ai.simonian.online"
+export ANTHROPIC_AUTH_TOKEN="<your workshop key>"
+export ANTHROPIC_MODEL="claude-gemma12-workshop"
+```
+
+**3. Run it** from your project folder: `claude`
+
+<!--
+Instructor: confirm before class: the exact gateway base URL (no /v1; Caddy
+routes to LiteLLM's Anthropic path), the model alias, and how each student
+gets their key (gyumri-NN / yerevan-NN). Setting ANTHROPIC_AUTH_TOKEN skips
+Claude Code's login prompt. Install alternatives: `npm i -g
+@anthropic-ai/claude-code` (needs Node), or the PowerShell installer on
+native Windows.
+-->
+
+---
+
+## Use it, but stay the boss
+
+Inside `claude`, just ask in plain English:
+
+> *"Add a `/quote` command to `bot/handlers.py` that replies with a random quote, and list it in `/help`."*
+
+- It edits the files, and can run the bot to test
+- **Read every line it writes.** Can't explain it? Ask it to explain, or undo it
+- *AI wrote it ≠ you understand it*. You'll read your code aloud in the review circle
+
+Claude Code is the assistant. **You're the engineer.**
+
+---
+
+## Your turn: pick one
+
+- `/quote`: a random quote from a list you write
+- `/fact`: a surprising fact (keep a few in a Python list)
+- `/roll`: a dice roll (`random.randint` is your friend)
+- `/flip`: heads or tails
 
 Same recipe as `/joke`: handler → `/help` entry → restart → test.
+
+*Build the first by hand; pair with Claude Code on the next, but you explain it in the review circle.*
 
 ---
 
 ## Level up: commands that think
 
-`/roast <name>` — read the words after the command, send them to the AI:
+`/roast <name>`: read the words after the command, send them to the AI:
 
 ```python
 @bot.message_handler(commands=["roast"], func=is_allowed)
@@ -197,17 +267,17 @@ def cmd_roast(message):
     bot.send_message(message.chat.id, reply)
 ```
 
-`message.text.split()` — that's argument parsing.
-*(The repo's `/model` handler does the same trick — it activates in Week 2.)*
+`message.text.split()`: that's argument parsing.
+*(The repo's `/model` handler does the same trick; it activates in Week 2.)*
 
 ---
 
 ## Lock it in with a test
 
-- Open `tests/test_handlers.py` — see how `/start` is tested
+- Open `tests/test_handlers.py`: see how `/start` is tested
 - Write the same shape of test for **your** command
-- `make test` — green locally
-- `git push` — green on GitHub Actions too
+- `make test`: green locally
+- `git push`: green on GitHub Actions too
 
 A command without a test is a command that breaks silently later.
 
@@ -217,7 +287,7 @@ A command without a test is a command that breaks silently later.
 
 1. Pass your laptop to the person on your left
 2. Read the handler you received **aloud**, line by line
-3. Explain what each line does — ask if you can't
+3. Explain what each line does; ask if you can't
 4. One compliment, one suggestion, pass it back
 
 Reading other people's code is half of real software engineering.
@@ -226,6 +296,6 @@ Reading other people's code is half of real software engineering.
 
 ## Today → Tomorrow
 
-Today your bot has custom commands — some static, one that thinks.
+Today your bot has custom commands: some static, one that thinks.
 
 **Tomorrow:** memory. The bot remembers conversations across restarts, and you'll find out what `/reset` actually resets.

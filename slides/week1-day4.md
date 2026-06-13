@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 4 — Memory and State'
+footer: 'Week 1 · Day 4 · Memory and State'
 ---
 
 <style>
@@ -44,6 +44,19 @@ pre {
   box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
+/* Syntax colors tuned for the dark code background (overrides the default
+   light highlight.js theme, whose dark tokens vanish on dark navy). */
+pre code .hljs-comment, pre code .hljs-quote { color: #8b9bb4; font-style: italic; }
+pre code .hljs-keyword, pre code .hljs-literal, pre code .hljs-type,
+pre code .hljs-selector-tag { color: #c792ea; }
+pre code .hljs-string, pre code .hljs-meta .hljs-string,
+pre code .hljs-regexp, pre code .hljs-addition { color: #addb67; }
+pre code .hljs-title, pre code .hljs-section, pre code .hljs-name { color: #82aaff; }
+pre code .hljs-built_in, pre code .hljs-class .hljs-title { color: #ffcb6b; }
+pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f78c6c; }
+pre code .hljs-attr, pre code .hljs-attribute,
+pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
+pre code .hljs-meta { color: #ffcb6b; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -96,7 +109,7 @@ section.title p, section.title strong {
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Cover slide — white text over a photo in normal flow (e.g. a closing slide) */
+/* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
   color: #fff;
@@ -123,7 +136,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1 — Day 4: Memory and State
+## Week 1, Day 4: Memory and State
 
 **Edik Simonian, Summer 2026**
 
@@ -132,11 +145,11 @@ section.cover p, section.cover strong, section.cover em {
 ## The problem
 
 1. Tell your bot: *"my favorite color is blue"*
-2. Ask: *"what's my favorite color?"* — it knows ✓
+2. Ask: *"what's my favorite color?"* and it knows ✓
 3. Restart the bot. Ask again.
 4. **It has no idea who you are.**
 
-`Storage not configured — running in stateless mode` — today we fix that line.
+The "stateless mode" notice you saw on Day 1 is what we fix today.
 
 ---
 
@@ -145,10 +158,10 @@ section.cover p, section.cover strong, section.cover em {
 - A wall of lockers 🔐
 - **Key** = the locker number → `chat:12345`
 - **Value** = whatever you put inside → the conversation
-- `get(key)` / `set(key, value)` — that's the whole API
+- `get(key)` / `set(key, value)`: that's the whole API
 - Ours also has **TTL**: lockers that empty themselves after 30 days
 
-Redis, DynamoDB, memcached — same idea. Ours is SQLite: a database in a single file.
+Redis, DynamoDB, memcached, same idea. Ours is SQLite: a database in a single file.
 
 ---
 
@@ -161,7 +174,7 @@ SQLITE_PATH=./bot.db
 ```
 
 - Restart → tell it your favorite color → restart again → ask
-- **It remembers.** The file `bot.db` appeared — that's the memory
+- **It remembers.** The file `bot.db` appeared: that's the memory
 - No signup, no server, no credit card. It's just a file
 - Delete the line → graceful fallback to stateless mode (try it)
 
@@ -179,15 +192,15 @@ def cmd_remember(message):
 
 `/recall` is the mirror image: `store.get(f"note:{...}")`.
 
-<!-- Assumes SQLITE_PATH is set so store is not None — say this out loud. -->
+<!-- Assumes SQLITE_PATH is set so store is not None; say this out loud. -->
 
 ---
 
 ## Solo build: a full notes feature
 
-- `/remember <text>` — add a note (not replace!)
-- `/recall` — list **all** saved notes
-- `/forget` — clear them
+- `/remember <text>`: add a note (not replace!)
+- `/recall`: list **all** saved notes
+- `/forget`: clear them
 
 Hint: the store saves **strings**. To keep a list, `json.dumps` it on the way in, `json.loads` it on the way out.
 
@@ -195,11 +208,11 @@ Hint: the store saves **strings**. To keep a list, `json.dumps` it on the way in
 
 ## Production touches already in the repo
 
-- **Rate limit** — `RATE_LIMIT` env var, default 250 messages/user/day
-- **History trimming** — last 20 messages per user, 30-day expiry
-- **Whitelist** — `ALLOWED_USERS` makes the bot **silent** to strangers
-  *(silence, not rejection — scanners learn nothing)*
-- **Dedupe** — Telegram retries webhooks; the bot won't answer twice
+- **Rate limit**: `RATE_LIMIT` env var, default 250 messages/user/day
+- **History trimming**: last 20 messages per user, 30-day expiry
+- **Whitelist**: `ALLOWED_USERS` makes the bot **silent** to strangers
+  *(silence, not rejection: scanners learn nothing)*
+- **Dedupe**: Telegram retries webhooks; the bot won't answer twice
 
 All built on the same store you just used.
 
@@ -210,8 +223,8 @@ All built on the same store you just used.
 The instructor just broke something in your bot.
 
 - Symptom first: what *exactly* stopped working?
-- `print()` is a debugger — trace the path of one message
-- Found it? Don't fix it yet — explain it to your neighbor first
+- `print()` is a debugger: trace the path of one message
+- Found it? Don't fix it yet; explain it to your neighbor first
 
 <!--
 Good breaks: typo the store key prefix in history.py, flip the rate-limit
@@ -222,6 +235,6 @@ comparison, make /recall read a different key than /remember writes.
 
 ## Today → Tomorrow
 
-Today your bot remembers — conversations, notes, limits — all in one SQLite file.
+Today your bot remembers conversations, notes, and limits, all in one SQLite file.
 
 **Tomorrow:** the internet. Your bot moves to a real server and answers while your laptop sleeps.
