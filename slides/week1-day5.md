@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 5 · Deploy and Ship'
+footer: 'Week 1 · Day 5 · Build Your Own Bot'
 ---
 
 <style>
@@ -137,114 +137,74 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1, Day 5: Deploy and Ship
+## Week 1, Day 5: Build Your Own Bot
 
 **Edik Simonian, Summer 2026**
 
 ---
 
-## From polling to webhook
+## Today: you're the engineer
 
-- All week: **polling**, your computer asks Telegram for updates
-- Production: **webhook**, Telegram pushes to your server's URL
-- PythonAnywhere runs the **same Flask app** as an always-on worker
-- Same code, same `.env` idea: different delivery
+Four days, four superpowers:
 
-Today your bot stops needing you.
+- **Day 1**: a bot that replies   ·   **Day 2**: a personality
+- **Day 3**: custom commands   ·   **Day 4**: memory, and live on the internet
 
----
+No new theory today. You **design and ship your own bot**, start to finish.
 
-## The front door: `api/index.py`
-
-| Route | Job |
-|---|---|
-| `/api/health` | "Is the worker alive?" → `OK` |
-| `/api/webhook` | Where Telegram delivers messages |
-| `/api/deploy` | Pulls new code on push (we'll wire this up) |
-
-- The webhook checks a **secret token**: forged requests get 403. The bot generates and registers it itself on first boot.
-- `threaded=False` in `bot/clients.py`: handlers must finish in the request, or the platform may kill them mid-reply.
+*Same repo, same skills. The idea is yours.*
 
 ---
 
-## Deploy: one command
+## Pick your idea
 
-1. Sign up at **pythonanywhere.com** (free Beginner tier)
-2. Create an API token: *Account → API token*
-3. Add to your local `.env`:
+Choose one, or invent your own:
 
-```
-PA_USERNAME=<your PA username>
-PA_API_TOKEN=<the token>
-```
+- 🌍 **Translator**: Armenian ↔ English on demand
+- ❓ **Quiz master**: asks, scores, keeps streaks *(you have a store!)*
+- 🎭 **Mood reader**: guesses the mood of a message
+- 📝 **Summarizer**: paste a wall of text, get three lines
 
-4. Ship it:
+It must be **live on your deployed bot** by demo time.
+
+---
+
+## Plan before you code
+
+Before touching the keyboard, write **three lines**:
+
+1. **The command(s)**: what does the user type? `/quiz`, `/translate <text>`...
+2. **Does it think?** A static reply, or does it call the AI (`ask_ai`)?
+3. **Does it remember?** One-shot, or does it use the store (`note:{id}` pattern)?
+
+A feature you can describe in three lines, you can build.
+
+---
+
+## Build it: you lead, Claude Code assists
+
+Same recipe as all week: **handler → `/help` entry → test → restart**.
+
+- Ask Claude Code in plain English; it edits `bot/handlers.py` and can run the bot
+- **Read every line.** Can't explain it? Ask it to explain, or undo it
+- Add a test in `tests/`; `make test` **green** before you ship
+
+> You're the engineer. Claude Code is the assistant. You explain your code at demo.
+
+---
+
+## Ship it live
+
+You deployed yesterday, so today it's one step:
 
 ```bash
-make deploy-pa
+git commit -am "Add my feature" && git push
 ```
 
-<!-- The script pauses once and asks you to open one URL in the browser; a PA quirk. -->
+**~3 seconds later your live bot has the feature.** Push-to-deploy does the rest.
 
----
-
-## What just happened
-
-The script created the web app, cloned **your fork**, built the venv, uploaded a production `.env`, including:
-
-```
-SQLITE_PATH=/home/<you>/bot.db
-WEBHOOK_URL=https://<you>.pythonanywhere.com/api/webhook
-```
-
-`WEBHOOK_URL` = auto-registration: every boot, the bot tells Telegram *"deliver here."* No manual `curl` needed.
-
----
-
-## Verify like an engineer
-
-1. `https://<you>.pythonanywhere.com/api/health` → `OK`
-2. Message your bot: the reply now comes from the server
-3. **Quit the bot on your computer (`Ctrl+C`). Message it again.** 🎉
-4. Something wrong? *Web tab → error log*: read the traceback
-
----
-
-## Push-to-deploy
-
-One-time setup on your fork, in *Settings → Secrets → Actions*:
-
-| Secret | Value |
-|---|---|
-| `DEPLOY_SECRET` | random string (also in PA `.env`) |
-| `PA_DEPLOY_URL` | `https://<you>.pythonanywhere.com/api/deploy` |
-
-Then:
-
-```bash
-git commit -am "New personality" && git push
-```
-
-**~3 seconds later the live bot is updated.** This is how real teams ship.
-
----
-
-## The fine print ⚠️
-
-- PA free tier: click **"Run until 3 months from today"**-style renewal **every month**, or the app auto-disables
-- PA emails you a week before. Set a phone reminder anyway.
-- Free tier limits outbound internet to a whitelist: Telegram and Cerebras are on it
-
----
-
-## Final project: ship one original feature
-
-- 🌍 Translator: Armenian ↔ English on demand
-- ❓ Quiz master: asks, scores, keeps streaks (you have a store!)
-- 🎭 Mood reader: guesses the mood of a message
-- 📝 Summarizer: paste a wall of text, get three lines
-
-Or your own idea. It must be **live on your deployed bot** by demo time.
+- No push-to-deploy set up? `make deploy-pa` still works
+- Verify on your **live** bot, feature working, before demo
 
 ---
 
@@ -254,7 +214,7 @@ Or your own idea. It must be **live on your deployed bot** by demo time.
 2. Try everyone's bot, find their feature
 3. Vote: funniest persona, most useful feature, best surprise
 
-**Same bot as Tuesday morning, now it lives on the internet.**
+**Same bot you started on Day 1, now it's yours, and it lives on the internet.**
 
 ---
 

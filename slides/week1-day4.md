@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 4 · Memory and State'
+footer: 'Week 1 · Day 4 · Memory and Deploy'
 ---
 
 <style>
@@ -137,7 +137,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1, Day 4: Memory and State
+## Week 1, Day 4: Memory and Deploy
 
 **Edik Simonian, Summer 2026**
 
@@ -239,8 +239,102 @@ All built on the same store you just used.
 
 ---
 
+## From polling to webhook
+
+- All week: **polling**, your computer asks Telegram for updates
+- Production: **webhook**, Telegram pushes to your server's URL
+- PythonAnywhere runs the **same Flask app** as an always-on worker
+- Same code, same `.env` idea: different delivery
+
+Memory done. Now your bot **stops needing you**.
+
+---
+
+## The front door: `api/index.py`
+
+| Route | Job |
+|---|---|
+| `/api/health` | "Is the worker alive?" → `OK` |
+| `/api/webhook` | Where Telegram delivers messages |
+| `/api/deploy` | Pulls new code on push (we'll wire this up) |
+
+- The webhook checks a **secret token**: forged requests get 403. The bot generates and registers it itself on first boot.
+- `threaded=False` in `bot/clients.py`: handlers must finish in the request, or the platform may kill them mid-reply.
+
+---
+
+## Deploy: one command
+
+1. Sign up at **pythonanywhere.com** (free Beginner tier)
+2. Create an API token: *Account → API token*
+3. Add to your local `.env`:
+
+```
+PA_USERNAME=<your PA username>
+PA_API_TOKEN=<the token>
+```
+
+4. Ship it:
+
+```bash
+make deploy-pa
+```
+
+<!-- The script pauses once and asks you to open one URL in the browser; a PA quirk. -->
+
+---
+
+## What just happened
+
+The script created the web app, cloned **your fork**, built the venv, uploaded a production `.env`, including:
+
+```
+SQLITE_PATH=/home/<you>/bot.db
+WEBHOOK_URL=https://<you>.pythonanywhere.com/api/webhook
+```
+
+`WEBHOOK_URL` = auto-registration: every boot, the bot tells Telegram *"deliver here."* No manual `curl` needed.
+
+---
+
+## Verify like an engineer
+
+1. `https://<you>.pythonanywhere.com/api/health` → `OK`
+2. Message your bot: the reply now comes from the server
+3. **Quit the bot on your computer (`Ctrl+C`). Message it again.** 🎉
+4. Something wrong? *Web tab → error log*: read the traceback
+
+---
+
+## Push-to-deploy
+
+One-time setup on your fork, in *Settings → Secrets → Actions*:
+
+| Secret | Value |
+|---|---|
+| `DEPLOY_SECRET` | random string (also in PA `.env`) |
+| `PA_DEPLOY_URL` | `https://<you>.pythonanywhere.com/api/deploy` |
+
+Then:
+
+```bash
+git commit -am "New personality" && git push
+```
+
+**~3 seconds later the live bot is updated.** This is how real teams ship.
+
+---
+
+## The fine print ⚠️
+
+- PA free tier: click **"Run until 3 months from today"**-style renewal **every month**, or the app auto-disables
+- PA emails you a week before. Set a phone reminder anyway.
+- Free tier limits outbound internet to a whitelist: Telegram and Cerebras are on it
+
+---
+
 ## Today → Tomorrow
 
-Today your bot remembers conversations, notes, and limits, all in one SQLite file.
+Today: your bot **remembers**, and it's **live on the internet**, updating on every push.
 
-**Tomorrow:** the internet. Your bot moves to a real server and answers while your computer is off.
+**Tomorrow:** the whole day is yours. You design and ship your **own** bot, start to finish.

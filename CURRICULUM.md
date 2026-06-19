@@ -22,7 +22,7 @@
 
 **Goal:** Ship a live, personalized Telegram bot backed by an LLM, deployed on PythonAnywhere, with persistent SQLite memory, a passing test suite, and push-to-deploy from GitHub.
 
-**Hardware required:** Any machine (laptop is enough — no GPU needed).
+**Hardware required:** Any computer (no GPU needed).
 
 **Repository:** https://github.com/EdikSimonian/telegram-vercel-bot
 
@@ -41,7 +41,7 @@
 Topics and activities:
 - What is a bot? How webhooks work vs polling — the two ways Telegram talks to your code.
 - Walkthrough of the full stack: Telegram → Flask → Cerebras → reply (polling locally, webhook in production).
-- GitHub: create an account, **fork** the Week 1 repo (the fork is what auto-deploys on Day 5), clone it, run `make install`.
+- GitHub: create an account, **fork** the Week 1 repo (the fork is what auto-deploys on Day 4), clone it, run `make install`.
 - Telegram: create an account if needed, then message `@BotFather` to create a bot and get the bot token.
 - Cerebras: sign up at cloud.cerebras.ai, create a free API key (no credit card required). *Instructor option: skip signups entirely by handing out pre-made keys to a gateway — the bot accepts any OpenAI-compatible endpoint via `AI_BASE_URL`.*
 - `cp .env.example .env`, then fill in `TELEGRAM_BOT_TOKEN` and `AI_API_KEY`.
@@ -70,29 +70,35 @@ Topics and activities:
 - Write a test for the new command in `tests/` and watch `make test` — and CI on the fork — go green.
 - Code review circle: each student reads another student's handler aloud and explains it.
 
-### Week 1 — Day 4: Memory and State
+### Week 1 — Day 4: Memory and Deploy
+
+The condensed learning day: memory in the first half, deployment in the second, so that by the end of Day 4 students have a stateful bot live on the internet. (Day 5 is then a free build day.)
 
 Topics and activities:
 - What is a key-value store? Explained with the locker analogy — user ID is the locker number, the value is what is inside.
 - Turn on persistence: set `SQLITE_PATH` in `.env`. No signup, no external service — the database file is created on first use.
 - Restart the bot — conversation history now survives reboots. Unset `SQLITE_PATH` to watch the bot degrade gracefully back to stateless mode.
+- How the bot remembers conversations: the model is stateless, so on every message `bot/ai.py` loads the chat history from the store, replays the whole conversation to the model, then saves the updated list back (keyed by `chat:{user_id}`, trimmed to the last 20 messages).
 - Live-code `/remember` and `/recall` together: store a note through the bot's store, retrieve it later.
 - Solo build: full notes feature — `/remember <text>`, `/recall` to list all, `/forget` to clear.
 - Production touches already in the repo: per-user rate limiting (`RATE_LIMIT`, 250 messages/day default), history trimming (`MAX_HISTORY`, 30-day expiry), the `ALLOWED_USERS` whitelist (and why it answers strangers with silence instead of a rejection), and webhook deduplication.
-- Debug challenge: the instructor silently breaks something — students find the bug using print statements.
+- Deploy to production — polling vs webhook for real this time: locally the bot asks Telegram for updates; in production Telegram pushes to our URL. PythonAnywhere runs the same Flask app as an always-on WSGI worker.
+- Walk through `api/index.py` — the `/api/health`, `/api/webhook`, and `/api/deploy` routes, how the webhook is protected by an auto-generated secret, and why `threaded=False` matters.
+- PythonAnywhere: sign up (free tier), create an API token, then deploy with one command: `make deploy-pa`. Webhook registration is automatic — with `WEBHOOK_URL` set, the bot registers itself with Telegram on every boot.
+- Verify production: hit `/api/health`, message the live bot, quit the local bot, and confirm replies still come from the server.
+- Push-to-deploy: add the two GitHub Actions secrets, then `git push` updates the live bot in about 3 seconds. The fine print: PA free-tier apps need a monthly "renew" click or they auto-disable — set a reminder.
 
-### Week 1 — Day 5: Deploy and Ship
+### Week 1 — Day 5: Build Your Own Bot
+
+A full build day: no new theory — students apply everything from Days 1–4 to design, build, and ship their own bot.
 
 Topics and activities:
-- Polling vs webhook, for real this time: locally the bot asks Telegram for updates; in production Telegram pushes to our URL. PythonAnywhere runs the same Flask app as an always-on WSGI worker.
-- Walk through `api/index.py` — the `/api/health`, `/api/webhook`, and `/api/deploy` routes, how the webhook is protected by an auto-generated secret, and why `threaded=False` matters.
-- PythonAnywhere: sign up at pythonanywhere.com (free tier), create an API token, then deploy with one command: `make deploy-pa`.
-- Webhook registration is automatic: with `WEBHOOK_URL` set, the bot registers itself with Telegram on every boot (a manual `curl` to `setWebhook` is the fallback path).
-- Verify production: hit `/api/health`, message the live bot, and read the server logs in the PA dashboard.
-- Push-to-deploy: add the two GitHub Actions secrets, change `SYSTEM_PROMPT`, `git push` — the live bot updates itself in about 3 seconds.
-- The fine print: PA free-tier apps need a monthly "renew" click in the dashboard or they auto-disable — set a reminder.
-- Final project: each student builds one original feature — translator, quiz, mood reader, summarizer, etc.
-- Demo day: everyone tests each other's live bots — the same bot from Day 1, now on the internet.
+- Framing: Days 1–4 covered replies, personality, commands, memory, and deployment. Today each student designs and ships their own bot, start to finish.
+- Pick an idea: translator (Armenian ↔ English), quiz master (asks, scores, keeps streaks using the store), mood reader, summarizer, or an original idea.
+- Plan first: in three lines, name the command(s), decide whether it calls the AI (`ask_ai`), and whether it needs memory (the store).
+- Build it with the all-week recipe — handler → `/help` entry → test → restart — using Claude Code as an assistant while reading and being able to explain every line.
+- Ship it live: `git push` updates the deployed bot via push-to-deploy (or `make deploy-pa`). The feature must be live on the deployed bot by demo time.
+- Demo day: post bot usernames, everyone tries each other's bots and finds the feature, and the room votes (funniest persona, most useful feature, best surprise).
 - Preview of Week 2: the AI behind the bot — what the model actually is, and how to train one.
 
 ---
@@ -161,7 +167,7 @@ Topics and activities:
 - Test the chatbot locally with `8_chat.py`.
 - Upload the model to HuggingFace (`python 7_deploy.py --repo <username>/armgpt`) and deploy the Gradio demo Space.
 - Connect the model to the Week 1 Telegram bot: the bot has a second-provider slot — set `ARMGPT_BASE_URL` to any OpenAI-compatible endpoint and switch with `/model armgpt`. The HF Space is the public demo UI; the bot needs the OpenAI-compatible endpoint (the reference deployment runs on Modal). Teaching moment: the provider sends only the latest message — no system prompt, no memory — sized for a small self-trained model.
-- Demo day: everyone tests each other's bots, running locally via `make run` (PythonAnywhere's free-tier outbound whitelist blocks the model endpoint, so the finale runs on laptops).
+- Demo day: everyone tests each other's bots, running locally via `make run` (PythonAnywhere's free-tier outbound whitelist blocks the model endpoint, so the finale runs on the local machines).
 
 ---
 
@@ -186,7 +192,7 @@ A: Two weeks total, 10 sessions (5 sessions per week).
 A: In Armenia — Week 1 runs in both Gyumri and Yerevan (identical content). Week 2 runs only in Yerevan.
 
 **Q: Do I need a GPU for Week 1?**
-A: No. Any laptop works for Week 1. Week 2 requires an RTX 4090.
+A: No. Any computer works for Week 1. Week 2 requires an RTX 4090.
 
 **Q: Do I need to pay for any services?**
 A: No. Every service used has a free tier: Cerebras (1M tokens/day, 30 requests/min, no credit card), PythonAnywhere (free Beginner tier — needs a monthly renewal click), Telegram (free), GitHub (free), HuggingFace (free).

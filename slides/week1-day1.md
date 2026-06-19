@@ -153,7 +153,7 @@ Two ways Telegram talks to your code:
 - **Polling**: your code keeps asking Telegram *"any new messages?"*
   → what we use **today**, on your computer
 - **Webhook**: Telegram pushes each message to your server's URL
-  → what we use **Friday**, in production
+  → what we use **Day 4**, in production
 
 *Same bot code either way. Only the delivery changes.*
 
@@ -167,7 +167,7 @@ Two ways Telegram talks to your code:
 - **Flask**: receives the messages
 - **Cerebras**: runs the LLM that writes the replies *(free tier)*
 - **SQLite**: memory *(Day 4)*
-- **PythonAnywhere**: hosting *(Day 5)*
+- **PythonAnywhere**: hosting *(Day 4)*
 - **GitHub**: your code, your tests, your deploys
 
 ---
