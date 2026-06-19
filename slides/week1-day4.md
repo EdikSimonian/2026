@@ -146,11 +146,10 @@ section.cover p, section.cover strong, section.cover em {
 ## The problem
 
 1. Tell your bot: *"my favorite color is blue"*
-2. Ask: *"what's my favorite color?"* and it knows ✓
-3. Restart the bot. Ask again.
-4. **It has no idea who you are.**
+2. Then ask, in your **very next message**: *"what's my favorite color?"*
+3. **It has no idea.**
 
-The "stateless mode" notice you saw on Day 1 is what we fix today.
+Each reply forgets the one before it, that's the "stateless mode" notice from Day 1. It's what we fix today.
 
 ---
 
@@ -327,7 +326,7 @@ git commit -am "New personality" && git push
 
 ## The fine print ⚠️
 
-- PA free tier: click **"Run until 3 months from today"**-style renewal **every month**, or the app auto-disables
+- PA free tier: click the **"Run until 3 months from today"** renewal button **every 3 months**, or the app auto-disables
 - PA emails you a week before. Set a phone reminder anyway.
 - Free tier limits outbound internet to a whitelist: Telegram and Cerebras are on it
 
