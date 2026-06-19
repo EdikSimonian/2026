@@ -57,6 +57,7 @@ pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f7
 pre code .hljs-attr, pre code .hljs-attribute,
 pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
 pre code .hljs-meta { color: #ffcb6b; }
+pre code .hljs-property, pre code .hljs-subst { color: #eaf1f8; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {

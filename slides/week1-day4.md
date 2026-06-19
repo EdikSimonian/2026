@@ -57,6 +57,7 @@ pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f7
 pre code .hljs-attr, pre code .hljs-attribute,
 pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
 pre code .hljs-meta { color: #ffcb6b; }
+pre code .hljs-property, pre code .hljs-subst { color: #eaf1f8; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -180,6 +181,26 @@ SQLITE_PATH=./bot.db
 
 ---
 
+## How the bot remembers conversations
+
+The model is **stateless**: each API call forgets the last. The memory is *our* code, not the model.
+
+```python
+# bot/ai.py — runs on every message
+history = get_history(user_id)          # load past turns from bot.db
+history.append({"role": "user", "content": text})
+
+messages = [{"role": "system", "content": SYSTEM_PROMPT}, *history]
+reply = generate(user_id, messages)     # replay the whole chat
+
+history.append({"role": "assistant", "content": reply})
+save_history(user_id, history)          # write back: last 20, 30-day TTL
+```
+
+Keyed by `chat:<your id>`, the list lives in `bot.db`, so it **survives restarts**.
+
+---
+
 ## Live-code: `/remember` and `/recall`
 
 ```python
@@ -218,23 +239,8 @@ All built on the same store you just used.
 
 ---
 
-## Debug challenge 🐛
-
-The instructor just broke something in your bot.
-
-- Symptom first: what *exactly* stopped working?
-- `print()` is a debugger: trace the path of one message
-- Found it? Don't fix it yet; explain it to your neighbor first
-
-<!--
-Good breaks: typo the store key prefix in history.py, flip the rate-limit
-comparison, make /recall read a different key than /remember writes.
--->
-
----
-
 ## Today → Tomorrow
 
 Today your bot remembers conversations, notes, and limits, all in one SQLite file.
 
-**Tomorrow:** the internet. Your bot moves to a real server and answers while your laptop sleeps.
+**Tomorrow:** the internet. Your bot moves to a real server and answers while your computer is off.

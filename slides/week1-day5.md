@@ -57,6 +57,7 @@ pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f7
 pre code .hljs-attr, pre code .hljs-attribute,
 pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
 pre code .hljs-meta { color: #ffcb6b; }
+pre code .hljs-property, pre code .hljs-subst { color: #eaf1f8; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -144,7 +145,7 @@ section.cover p, section.cover strong, section.cover em {
 
 ## From polling to webhook
 
-- All week: **polling**, your laptop asks Telegram for updates
+- All week: **polling**, your computer asks Telegram for updates
 - Production: **webhook**, Telegram pushes to your server's URL
 - PythonAnywhere runs the **same Flask app** as an always-on worker
 - Same code, same `.env` idea: different delivery
@@ -204,7 +205,7 @@ WEBHOOK_URL=https://<you>.pythonanywhere.com/api/webhook
 
 1. `https://<you>.pythonanywhere.com/api/health` → `OK`
 2. Message your bot: the reply now comes from the server
-3. **Close your laptop. Message it again.** 🎉
+3. **Quit the bot on your computer (`Ctrl+C`). Message it again.** 🎉
 4. Something wrong? *Web tab → error log*: read the traceback
 
 ---

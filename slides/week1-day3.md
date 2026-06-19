@@ -57,6 +57,7 @@ pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f7
 pre code .hljs-attr, pre code .hljs-attribute,
 pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
 pre code .hljs-meta { color: #ffcb6b; }
+pre code .hljs-property, pre code .hljs-subst { color: #eaf1f8; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -285,10 +286,10 @@ A command without a test is a command that breaks silently later.
 
 ## Code review circle
 
-1. Pass your laptop to the person on your left
-2. Read the handler you received **aloud**, line by line
+1. Rotate one seat to your left, to your neighbor's screen
+2. Read the handler on that screen **aloud**, line by line
 3. Explain what each line does; ask if you can't
-4. One compliment, one suggestion, pass it back
+4. One compliment, one suggestion, then rotate back
 
 Reading other people's code is half of real software engineering.
 

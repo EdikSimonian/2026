@@ -57,6 +57,7 @@ pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f7
 pre code .hljs-attr, pre code .hljs-attribute,
 pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
 pre code .hljs-meta { color: #ffcb6b; }
+pre code .hljs-property, pre code .hljs-subst { color: #eaf1f8; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -207,7 +208,7 @@ class and update these names on the slide if needed.
 ## Pair demo
 
 1. Swap seats (or share bot usernames)
-2. Chat with your partner's bot for 3 minutes
+2. Chat with your partner's bot for 5 minutes
 3. Guess their system prompt from the replies alone
 4. Feedback: one thing that works, one thing to sharpen
 

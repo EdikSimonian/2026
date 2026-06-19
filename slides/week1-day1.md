@@ -57,6 +57,7 @@ pre code .hljs-number, pre code .hljs-symbol, pre code .hljs-bullet { color: #f7
 pre code .hljs-attr, pre code .hljs-attribute,
 pre code .hljs-variable, pre code .hljs-params { color: #eaf1f8; }
 pre code .hljs-meta { color: #ffcb6b; }
+pre code .hljs-property, pre code .hljs-subst { color: #eaf1f8; }
 table { font-size: 27px; }
 th { background: rgba(21, 54, 92, 0.10); }
 blockquote {
@@ -76,6 +77,7 @@ blockquote {
   padding: 14px 10px;
   margin: 6px 0 24px;
 }
+.flow a { color: #c2561e; text-decoration: none; }
 footer { color: #6a7b8a; font-size: 16px; }
 
 /* Title slide over the photo */
@@ -122,13 +124,23 @@ section.title p, section.title strong {
 
 ---
 
+## See it working first
+
+<div class="flow"><a href="https://t.me/vercel_telegram_ed_bot" target="_blank" rel="noopener">t.me/vercel_telegram_ed_bot</a></div>
+
+This is where you'll be by **Friday**: your own bot, your personality, live on the internet.
+
+*Go ahead, message it now, then we'll build one from scratch.*
+
+---
+
 ## What you'll build this week
 
 - A **Telegram bot** powered by a real LLM
 - With its own **personality**, you design it
 - Custom **slash commands**, you code them
 - **Memory** that survives restarts
-- **Live on the internet** by Friday, running even when your laptop is closed
+- **Live on the internet** by Friday, running even when your computer is off
 
 *By the end of today: the bot replies to you, from code on your machine.*
 
@@ -139,7 +151,7 @@ section.title p, section.title strong {
 Two ways Telegram talks to your code:
 
 - **Polling**: your code keeps asking Telegram *"any new messages?"*
-  → what we use **today**, on your laptop
+  → what we use **today**, on your computer
 - **Webhook**: Telegram pushes each message to your server's URL
   → what we use **Friday**, in production
 
@@ -271,6 +283,6 @@ Change the greeting → `Ctrl+C` → `make run` → send `/start`.
 
 ## Today → Tomorrow
 
-Today the bot works on your laptop and answers as a generic assistant.
+Today the bot works on your computer and answers as a generic assistant.
 
 **Tomorrow:** the most powerful single line in the project, the **system prompt**. Your bot gets a personality.
