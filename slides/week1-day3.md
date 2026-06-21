@@ -213,7 +213,8 @@ curl -fsSL https://claude.ai/install.sh | bash
 ```bash
 export ANTHROPIC_BASE_URL="https://ai.simonian.online"
 export ANTHROPIC_AUTH_TOKEN="<your workshop key>"
-export ANTHROPIC_MODEL="claude-gemma12-workshop"
+export ANTHROPIC_MODEL="gemma26"
+export ANTHROPIC_SMALL_FAST_MODEL="gemma26"
 ```
 
 **3. Run it** from your project folder: `claude`
