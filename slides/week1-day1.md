@@ -126,7 +126,7 @@ section.title p, section.title strong {
 
 ## See it working first
 
-<div class="flow"><a href="https://t.me/vercel_telegram_ed_bot" target="_blank" rel="noopener">t.me/vercel_telegram_ed_bot</a></div>
+<div class="flow"><a href="https://t.me/tele_pythonanywhere_bot" target="_blank" rel="noopener">t.me/tele_pythonanywhere_bot</a></div>
 
 This is where you'll be by **Friday**: your own bot, your personality, live on the internet.
 
