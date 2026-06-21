@@ -146,6 +146,18 @@ This is where you'll be by **Friday**: your own bot, your personality, live on t
 
 ---
 
+## The week, day by day
+
+- **Day 1, Setup and First Message** *(today)*: fork the repo, get your tokens, `make run`, and ship your first `/start` edit.
+- **Day 2, Personality and Prompts**: the system prompt, the one line that gives your bot a voice and a persona.
+- **Day 3, New Commands**: live-code `/joke`, then build your own like `/quote` and `/roast`, with a test.
+- **Day 4, Memory and Deploy**: SQLite memory that survives restarts, then going live on PythonAnywhere by webhook.
+- **Day 5, Build Your Own Bot**: design and ship a feature that is all yours, then demo to the room.
+
+*Each day builds on the last. By Friday it is yours, and it is online.*
+
+---
+
 ## What is a bot?
 
 Two ways Telegram talks to your code:
@@ -175,7 +187,7 @@ Two ways Telegram talks to your code:
 ## Setup 1 of 3: GitHub
 
 1. Create a GitHub account *(if you don't have one)*
-2. **Fork** the repo: your own copy, needed for auto-deploy on Day 5
+2. **Fork** the repo: your own copy, needed for auto-deploy on Day 4
 3. Clone your fork and install:
 
 ```bash
