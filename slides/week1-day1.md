@@ -124,6 +124,18 @@ section.title p, section.title strong {
 
 ---
 
+## First, let's meet the room
+
+Go around, **30 seconds each**:
+
+- **Who are you?** Your name and grade
+- **What have you made or messed with?** Any project, game, app, website, mod, art, anything you've built or tinkered with
+- **What do you want to build?** Something you look forward to creating or programming
+
+*No wrong answers, even "nothing yet" is fine. This is where we find out what to build by Friday.*
+
+---
+
 ## See it working first
 
 <div class="flow"><a href="https://t.me/tele_pythonanywhere_bot" target="_blank" rel="noopener">t.me/tele_pythonanywhere_bot</a></div>
