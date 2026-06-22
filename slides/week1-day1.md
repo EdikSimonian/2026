@@ -203,6 +203,7 @@ Two ways Telegram talks to your code:
 3. Clone your fork and install:
 
 ```bash
+navigate https://github.com/EdikSimonian/telegram-pythonanywhere-bot.git
 git clone https://github.com/<your-username>/telegram-pythonanywhere-bot.git
 cd telegram-pythonanywhere-bot
 make install
