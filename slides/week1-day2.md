@@ -241,25 +241,16 @@ Today you shaped your bot by hand. Now meet the tool that helps you build the ne
 
 ## Connect it to the workshop AI
 
-**From the workshop repo:**
+From the workshop repo:
 
 ```bash
 cd 2026/setup
 ./connect-claude-code.sh sk-your-key-here
 ```
 
-The script will:
+Use the personal key handed out in class.
 
-- check your key
-- install Claude Code if needed
-- point it at the workshop gateway
-- launch `claude`
-
-Want new terminals to stay connected?
-
-```bash
-./connect-claude-code.sh sk-your-key-here --persist
-```
+The script checks the key, installs Claude Code if needed, points it at the workshop gateway, and launches `claude`.
 
 <!--
 Instructor: confirm before class: the exact gateway base URL (no /v1; Caddy
@@ -268,6 +259,25 @@ gets their key (gyumri-NN / yerevan-NN). Setting ANTHROPIC_AUTH_TOKEN skips
 Claude Code's login prompt. The script handles macOS / Linux / WSL / Git-Bash.
 Native Windows PowerShell students should use setup/CLAUDE-CODE.md.
 -->
+
+---
+
+## Keep Claude Code connected
+
+Want new terminals to stay connected?
+
+```bash
+cd 2026/setup
+./connect-claude-code.sh sk-your-key-here --persist
+```
+
+This saves the workshop settings in your shell profile:
+
+- the same personal class key
+- the workshop gateway URL
+- the model settings Claude Code needs
+
+New terminal windows can run `claude` immediately.
 
 ---
 
