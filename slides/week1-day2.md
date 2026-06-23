@@ -109,7 +109,6 @@ section.title p, section.title strong {
   color: #fff;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
-
 /* Cover slide: white text over a photo in normal flow (e.g. a closing slide) */
 section.cover {
   justify-content: center;
@@ -140,6 +139,15 @@ section.cover p, section.cover strong, section.cover em {
 ## Week 1, Day 2: Personality and Prompts
 
 **Edik Simonian, Summer 2026**
+
+---
+
+## Ground rules
+
+- No watching videos during the workshop
+- No gaming during the workshop
+- Keep side conversations short and quiet
+- If you use AI-generated code, you must **fully understand it** and be able to explain how it works
 
 ---
 
