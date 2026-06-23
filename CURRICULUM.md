@@ -60,29 +60,31 @@ Topics and activities:
 - Update `/help` and `/about` commands to match the new bot identity.
 - Meet Claude Code — install the terminal AI pair-programmer and point it at the workshop gateway (each student's key is handed out in class). Put it to work on the day's edits (e.g., rewriting `/about` in the bot's voice) while reading and being able to explain every line it writes. It is set up here so Days 3–5 can build with it.
 
-### Week 1 — Day 3: New Commands
+### Week 1 — Day 3: Commands and Memory
+
+Commands in the first half, memory in the second — by the end of Day 3 the bot has custom commands that think and a memory that survives restarts. (Day 4 is then a pure deployment day.)
 
 Topics and activities:
 - How Python decorators work — just enough to understand `@bot.message_handler`.
-- Tour of the built-in commands: `/start`, `/help`, `/reset`, `/about` — what `/reset` clears is a preview of Day 4.
-- Live-code a `/joke` command together: write the handler, update `/help`, and test it.
-- Solo build: each student picks one command to implement — `/quote`, `/fact`, `/roll`, or `/flip`.
-- Level up: make a command call the AI — build `/roast <name>`, which injects a name into the prompt. Argument parsing: how to read the words after a slash command. (Read the repo's `/model` handler as reference — it only registers once a second provider is configured, which happens in Week 2.)
+- Tour of the built-in commands: `/start`, `/help`, `/reset`, `/about` — what `/reset` clears is a preview of the afternoon's memory section.
+- Live-code a `/joke` command together, and make it **call the AI** so the joke is different every time rather than a hardcoded string: write the handler, update `/help`, and test it.
+- Solo build: each student picks one command to implement. Most call the AI for fresh output every time — `/quote`, `/fact`, `/compliment` — with `/roll` kept as the one deliberately static example (`random.randint`, no AI) to contrast the two styles.
+- Level up: argument parsing — build `/roast <name>`, which reads the words after the command and injects the name into the prompt. (Read the repo's `/model` handler as reference — it only registers once a second provider is configured, which happens in Week 2.)
 - Write a test for the new command in `tests/` and watch `make test` — and CI on the fork — go green.
 - Code review circle: each student reads another student's handler aloud and explains it.
-
-### Week 1 — Day 4: Memory and Deploy
-
-The condensed learning day: memory in the first half, deployment in the second, so that by the end of Day 4 students have a stateful bot live on the internet. (Day 5 is then a free build day.)
-
-Topics and activities:
 - What is a key-value store? Explained with the locker analogy — user ID is the locker number, the value is what is inside.
-- Turn on persistence: set `SQLITE_PATH` in `.env`. No signup, no external service — the database file is created on first use.
-- Restart the bot — conversation history now survives reboots. Unset `SQLITE_PATH` to watch the bot degrade gracefully back to stateless mode.
+- Turn on persistence: set `SQLITE_PATH` in `.env`. No signup, no external service — the database file is created on first use. Restart the bot — conversation history now survives reboots. Unset `SQLITE_PATH` to watch the bot degrade gracefully back to stateless mode.
 - How the bot remembers conversations: the model is stateless, so on every message `bot/ai.py` loads the chat history from the store, replays the whole conversation to the model, then saves the updated list back (keyed by `chat:{user_id}`, trimmed to the last 20 messages).
 - Live-code `/remember` and `/recall` together: store a note through the bot's store, retrieve it later.
 - Solo build: full notes feature — `/remember <text>`, `/recall` to list all, `/forget` to clear.
-- Production touches already in the repo: per-user rate limiting (`RATE_LIMIT`, 250 messages/day default), history trimming (`MAX_HISTORY`, 30-day expiry), the `ALLOWED_USERS` whitelist (and why it answers strangers with silence instead of a rejection), and webhook deduplication.
+
+### Week 1 — Day 4: Deploy
+
+A deployment day: by the end of Day 4 students have their stateful bot live on the internet, updating on every push. (Day 5 is then a free build day.)
+
+Topics and activities:
+- Recap of where the bot stands after Day 3 — a persona, commands that think, and persistent memory — but it only runs while the laptop is on.
+- Production touches already in the repo, all built on the same store from Day 3: per-user rate limiting (`RATE_LIMIT`, 250 messages/day default), history trimming (`MAX_HISTORY`, 30-day expiry), the `ALLOWED_USERS` whitelist (and why it answers strangers with silence instead of a rejection), and webhook deduplication.
 - Deploy to production — polling vs webhook for real this time: locally the bot asks Telegram for updates; in production Telegram pushes to our URL. PythonAnywhere runs the same Flask app as an always-on WSGI worker.
 - Walk through `api/index.py` — the `/api/health`, `/api/webhook`, and `/api/deploy` routes, how the webhook is protected by an auto-generated secret, and why `threaded=False` matters.
 - PythonAnywhere: sign up (free tier), create an API token, then deploy with one command: `make deploy-pa`. Webhook registration is automatic — with `WEBHOOK_URL` set, the bot registers itself with Telegram on every boot.

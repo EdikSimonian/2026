@@ -23,8 +23,8 @@ Week 1 is identical in **Gyumri** and **Yerevan**; **Week 2** runs only in Yerev
 |-----|-------|--------|-----|
 | 1 | Setup and First Message | [md](./slides/week1-day1.md) | [pdf](./presentation/week1-day1.pdf) |
 | 2 | Personality and Prompts | [md](./slides/week1-day2.md) | [pdf](./presentation/week1-day2.pdf) |
-| 3 | New Commands | [md](./slides/week1-day3.md) | [pdf](./presentation/week1-day3.pdf) |
-| 4 | Memory and Deploy | [md](./slides/week1-day4.md) | [pdf](./presentation/week1-day4.pdf) |
+| 3 | Commands and Memory | [md](./slides/week1-day3.md) | [pdf](./presentation/week1-day3.pdf) |
+| 4 | Deploy | [md](./slides/week1-day4.md) | [pdf](./presentation/week1-day4.pdf) |
 | 5 | Build Your Own Bot | [md](./slides/week1-day5.md) | [pdf](./presentation/week1-day5.pdf) |
 
 ### Yerevan — Week 1: Building a Telegram Bot with AI
@@ -35,8 +35,8 @@ Same content as Gyumri Week 1.
 |-----|-------|--------|-----|
 | 1 | Setup and First Message | [md](./slides/week1-day1.md) | [pdf](./presentation/week1-day1.pdf) |
 | 2 | Personality and Prompts | [md](./slides/week1-day2.md) | [pdf](./presentation/week1-day2.pdf) |
-| 3 | New Commands | [md](./slides/week1-day3.md) | [pdf](./presentation/week1-day3.pdf) |
-| 4 | Memory and Deploy | [md](./slides/week1-day4.md) | [pdf](./presentation/week1-day4.pdf) |
+| 3 | Commands and Memory | [md](./slides/week1-day3.md) | [pdf](./presentation/week1-day3.pdf) |
+| 4 | Deploy | [md](./slides/week1-day4.md) | [pdf](./presentation/week1-day4.pdf) |
 | 5 | Build Your Own Bot | [md](./slides/week1-day5.md) | [pdf](./presentation/week1-day5.pdf) |
 
 ### Yerevan — Week 2: Training a Language Model from Scratch

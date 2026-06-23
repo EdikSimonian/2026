@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 4 · Memory and Deploy'
+footer: 'Week 1 · Day 4 · Deploy'
 ---
 
 <style>
@@ -137,92 +137,17 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1, Day 4: Memory and Deploy
+## Week 1, Day 4: Deploy
 
 **Edik Simonian, Summer 2026**
 
 ---
 
-## The problem
+## Yesterday → today
 
-1. Tell your bot: *"my favorite color is blue"*
-2. Then ask, in your **very next message**: *"what's my favorite color?"*
-3. **It has no idea.**
+Your bot has a persona, commands that **think**, and a **memory** that survives restarts.
 
-Each reply forgets the one before it, that's the "stateless mode" notice from Day 1. It's what we fix today.
-
----
-
-## Key-value store = lockers
-
-- A wall of lockers 🔐
-- **Key** = the locker number → `chat:12345`
-- **Value** = whatever you put inside → the conversation
-- `get(key)` / `set(key, value)`: that's the whole API
-- Ours also has **TTL**: lockers that empty themselves after 30 days
-
-Redis, DynamoDB, memcached, same idea. Ours is SQLite: a database in a single file.
-
----
-
-## Turn it on
-
-`.env`:
-
-```
-SQLITE_PATH=./bot.db
-```
-
-- Restart → tell it your favorite color → restart again → ask
-- **It remembers.** The file `bot.db` appeared: that's the memory
-- No signup, no server, no credit card. It's just a file
-- Delete the line → graceful fallback to stateless mode (try it)
-
----
-
-## How the bot remembers conversations
-
-The model is **stateless**: each API call forgets the last. The memory is *our* code, not the model.
-
-```python
-# bot/ai.py — runs on every message
-history = get_history(user_id)          # load past turns from bot.db
-history.append({"role": "user", "content": text})
-
-messages = [{"role": "system", "content": SYSTEM_PROMPT}, *history]
-reply = generate(user_id, messages)     # replay the whole chat
-
-history.append({"role": "assistant", "content": reply})
-save_history(user_id, history)          # write back: last 20, 30-day TTL
-```
-
-Keyed by `chat:<your id>`, the list lives in `bot.db`, so it **survives restarts**.
-
----
-
-## Live-code: `/remember` and `/recall`
-
-```python
-@bot.message_handler(commands=["remember"], func=is_allowed)
-def cmd_remember(message):
-    note = message.text.split(maxsplit=1)[1] if " " in message.text else ""
-    store.set(f"note:{message.from_user.id}", note)
-    bot.send_message(message.chat.id, "Saved!")
-```
-
-`/recall` is the mirror image: `store.get(f"note:{...}")`.
-
-<!-- Assumes SQLITE_PATH is set so store is not None; say this out loud. -->
-
----
-
-## Solo build: a full notes feature
-
-- `/remember <text>`: add a note (not replace!)
-- `/recall`: list **all** saved notes
-- `/forget`: clear them
-
-Hint: the store saves **strings**. To keep a list, `json.dumps` it on the way in, `json.loads` it on the way out.
+One thing is still missing: it only runs **while your laptop is on**. Today it leaves your machine and goes **live on the internet**.
 
 ---
 
@@ -234,7 +159,7 @@ Hint: the store saves **strings**. To keep a list, `json.dumps` it on the way in
   *(silence, not rejection: scanners learn nothing)*
 - **Dedupe**: Telegram retries webhooks; the bot won't answer twice
 
-All built on the same store you just used.
+All built on the same store you set up yesterday.
 
 ---
 
@@ -245,7 +170,7 @@ All built on the same store you just used.
 - PythonAnywhere runs the **same Flask app** as an always-on worker
 - Same code, same `.env` idea: different delivery
 
-Memory done. Now your bot **stops needing you**.
+Now your bot **stops needing your laptop**.
 
 ---
 
@@ -334,6 +259,6 @@ git commit -am "New personality" && git push
 
 ## Today → Tomorrow
 
-Today: your bot **remembers**, and it's **live on the internet**, updating on every push.
+Today: your bot is **live on the internet**, updating itself on every push.
 
 **Tomorrow:** the whole day is yours. You design and ship your **own** bot, start to finish.

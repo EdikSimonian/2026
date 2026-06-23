@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 3 · New Commands'
+footer: 'Week 1 · Day 3 · Commands & Memory'
 ---
 
 <style>
@@ -137,7 +137,7 @@ section.cover p, section.cover strong, section.cover em {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1, Day 3: New Commands
+## Week 1, Day 3: Commands and Memory
 
 **Edik Simonian, Summer 2026**
 
@@ -167,20 +167,22 @@ def cmd_start(message):
 | `/reset` | Clears your conversation history |
 | `/about` | Model, storage, and hosting info |
 
-`/reset` clears *history*. Wait, what history? **That's tomorrow.**
+`/reset` clears *history*. Wait, what history? **That's the second half of today.**
 
 ---
 
 ## Live-code: `/joke`
 
+A hardcoded joke tells the same one forever. Let's make the command **think**:
+
 ```python
 @bot.message_handler(commands=["joke"], func=is_allowed)
 def cmd_joke(message):
-    bot.send_message(
-        message.chat.id,
-        "Why do programmers prefer dark mode? Because light attracts bugs!",
-    )
+    reply = ask_ai(message.from_user.id, "Tell one short, clean programming joke.")
+    bot.send_message(message.chat.id, reply)
 ```
+
+`ask_ai(user_id, prompt)` sends a one-off prompt and returns the reply — **a fresh joke every time**, no list to maintain.
 
 1. Add the handler to `bot/handlers.py`
 2. Add `/joke` to `/help`
@@ -190,18 +192,20 @@ def cmd_joke(message):
 
 ## Your turn: pick one
 
-- `/quote`: a random quote from a list you write
-- `/fact`: a surprising fact (keep a few in a Python list)
-- `/roll`: a dice roll (`random.randint` is your friend)
-- `/flip`: heads or tails
+Each asks the AI — fresh output every time, just like `/joke`:
 
-Same recipe as `/joke`: handler → `/help` entry → restart → test.
+- `/quote`: an original motivational line
+- `/fact`: a surprising fact (let the AI surprise you)
+- `/compliment`: brighten someone's day
+- `/roll`: a dice roll — the **odd one out**, pure Python (`random.randint`), no AI
+
+Same recipe: handler → `/help` entry → restart → test.
 
 *Build the first by hand; pair with Claude Code on the next, but you explain it in the review circle.*
 
 ---
 
-## Level up: commands that think
+## Level up: pass your words to the AI
 
 `/roast <name>`: read the words after the command, send them to the AI:
 
@@ -240,8 +244,91 @@ Reading other people's code is half of real software engineering.
 
 ---
 
+## The problem
+
+1. Tell your bot: *"my favorite color is blue"*
+2. Then ask, in your **very next message**: *"what's my favorite color?"*
+3. **It has no idea.**
+
+Each reply forgets the one before it, that's the "stateless mode" notice from Day 1. Commands done; **now we give the bot a memory.**
+
+---
+
+## Key-value store = lockers
+
+- A wall of lockers 🔐
+- **Key** = the locker number → `chat:12345`
+- **Value** = whatever you put inside → the conversation
+- `get(key)` / `set(key, value)`: that's the whole API
+- Ours also has **TTL**: lockers that empty themselves after 30 days
+
+Redis, DynamoDB, memcached, same idea. Ours is SQLite: a database in a single file.
+
+---
+
+## Turn it on
+
+`.env`:
+
+```
+SQLITE_PATH=./bot.db
+```
+
+- Restart → tell it your favorite color → restart again → ask
+- **It remembers.** The file `bot.db` appeared: that's the memory
+- No signup, no server, no credit card. It's just a file
+- Delete the line → graceful fallback to stateless mode (try it)
+
+---
+
+## How the bot remembers conversations
+
+The model is **stateless**: each API call forgets the last. The memory is *our* code, not the model.
+
+```python
+# bot/ai.py — runs on every message
+history = get_history(user_id)          # load past turns from bot.db
+history.append({"role": "user", "content": text})
+
+messages = [{"role": "system", "content": SYSTEM_PROMPT}, *history]
+reply = generate(user_id, messages)     # replay the whole chat
+
+history.append({"role": "assistant", "content": reply})
+save_history(user_id, history)          # write back: last 20, 30-day TTL
+```
+
+Keyed by `chat:<your id>`, the list lives in `bot.db`, so it **survives restarts**.
+
+---
+
+## Live-code: `/remember` and `/recall`
+
+```python
+@bot.message_handler(commands=["remember"], func=is_allowed)
+def cmd_remember(message):
+    note = message.text.split(maxsplit=1)[1] if " " in message.text else ""
+    store.set(f"note:{message.from_user.id}", note)
+    bot.send_message(message.chat.id, "Saved!")
+```
+
+`/recall` is the mirror image: `store.get(f"note:{...}")`.
+
+<!-- Assumes SQLITE_PATH is set so store is not None; say this out loud. -->
+
+---
+
+## Solo build: a full notes feature
+
+- `/remember <text>`: add a note (not replace!)
+- `/recall`: list **all** saved notes
+- `/forget`: clear them
+
+Hint: the store saves **strings**. To keep a list, `json.dumps` it on the way in, `json.loads` it on the way out.
+
+---
+
 ## Today → Tomorrow
 
-Today your bot has custom commands: some static, one that thinks.
+Today your bot has commands that **think**, and a memory that **survives restarts** — and you found out what `/reset` actually resets.
 
-**Tomorrow:** memory. The bot remembers conversations across restarts, and you'll find out what `/reset` actually resets.
+**Tomorrow:** deploy. The bot goes live on the internet and updates on every `git push`, so it stops needing your laptop.

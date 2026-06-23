@@ -148,7 +148,7 @@ section.cover p, section.cover strong, section.cover em {
 Four days, four superpowers:
 
 - **Day 1**: a bot that replies   ·   **Day 2**: a personality
-- **Day 3**: custom commands   ·   **Day 4**: memory, and live on the internet
+- **Day 3**: commands that think, and memory   ·   **Day 4**: live on the internet
 
 No new theory today. You **design and ship your own bot**, start to finish.
 
