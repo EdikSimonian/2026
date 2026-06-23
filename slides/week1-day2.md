@@ -227,8 +227,66 @@ Both live in `bot/handlers.py`. Edit them like you edited `/start` yesterday.
 
 ---
 
+## Meet Claude Code
+
+An **AI pair-programmer** that lives in your terminal.
+
+- Reads your project: the real `bot/` files
+- Writes code, runs commands, explains errors
+- You ask in plain English; it edits and tests
+
+Today you shaped your bot by hand. Now meet the tool that helps you build the next thing, *with you in charge*.
+
+---
+
+## Connect it to the workshop AI
+
+**From the workshop repo:**
+
+```bash
+cd 2026/setup
+./connect-claude-code.sh sk-your-key-here
+```
+
+The script will:
+
+- check your key
+- install Claude Code if needed
+- point it at the workshop gateway
+- launch `claude`
+
+Want new terminals to stay connected?
+
+```bash
+./connect-claude-code.sh sk-your-key-here --persist
+```
+
+<!--
+Instructor: confirm before class: the exact gateway base URL (no /v1; Caddy
+routes to LiteLLM's Anthropic path), the model alias, and how each student
+gets their key (gyumri-NN / yerevan-NN). Setting ANTHROPIC_AUTH_TOKEN skips
+Claude Code's login prompt. The script handles macOS / Linux / WSL / Git-Bash.
+Native Windows PowerShell students should use setup/CLAUDE-CODE.md.
+-->
+
+---
+
+## Use it, but stay the boss
+
+Inside `claude`, just ask in plain English:
+
+> *"Update `/about` in `bot/handlers.py` to introduce my persona, in its voice."*
+
+- It edits the files, and can run the bot to test
+- **Read every line it writes.** Can't explain it? Ask it to explain, or undo it
+- *AI wrote it ≠ you understand it*. You own every line you ship
+
+Claude Code is the assistant. **You're the engineer.**
+
+---
+
 ## Today → Tomorrow
 
-Today your bot has a personality, defined in one string.
+Today your bot has a personality, and you've met Claude Code, your pair-programmer in the terminal.
 
-**Tomorrow:** new powers. You'll write your own slash commands, including one that calls the AI itself.
+**Tomorrow:** new powers. You'll write your own slash commands, including one that calls the AI itself, with Claude Code helping you build.

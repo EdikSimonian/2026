@@ -58,6 +58,7 @@ Topics and activities:
 - Model comparison: set `AI_MODEL` in `.env` and swap between `gpt-oss-120b` (default) and `zai-glm-4.7`. The Cerebras free lineup rotates — the instructor confirms the current options with `GET /v1/models` before the session.
 - Pair demo: students chat with each other's personas and give feedback.
 - Update `/help` and `/about` commands to match the new bot identity.
+- Meet Claude Code — install the terminal AI pair-programmer and point it at the workshop gateway (each student's key is handed out in class). Put it to work on the day's edits (e.g., rewriting `/about` in the bot's voice) while reading and being able to explain every line it writes. It is set up here so Days 3–5 can build with it.
 
 ### Week 1 — Day 3: New Commands
 
