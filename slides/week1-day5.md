@@ -39,9 +39,10 @@ pre {
   background: #0f2233;
   border-radius: 12px;
   padding: 20px 26px;
+  margin: 0.25em 0 1em;
   font-size: 23px;
   line-height: 1.45;
-  box-shadow: 0 10px 26px rgba(15, 34, 51, 0.20);
+  box-shadow: 0 5px 14px rgba(15, 34, 51, 0.14);
 }
 pre code { background: transparent; color: #eaf1f8; padding: 0; font-size: 1em; }
 /* Syntax colors tuned for the dark code background (overrides the default
@@ -161,14 +162,14 @@ Swapped seats? This machine may be signed in as **yesterday's student** — push
 ```bash
 brew install gh      # GitHub CLI (once per machine)
 gh auth logout       # drop the old login
-gh auth login        # GitHub.com → HTTPS → Login with a browser
+gh auth login        # GitHub.com → HTTPS → browser (Google OK)
 gh auth setup-git    # git pushes as YOU now
 
 git config user.name  "Your Name"
 git config user.email "your-github-email"
 ```
 
-Run the `git config` lines **inside your bot folder**. *Browser login works even if you sign in to GitHub with Google.*
+Run the `git config` lines **inside your bot folder**.
 
 ---
 
