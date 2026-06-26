@@ -244,3 +244,17 @@ git commit -am "Add my feature" && git push
 3. Vote: funniest persona, most useful feature, best surprise
 
 **Same bot you started on Day 1, now it's yours, and it lives on the internet.**
+
+---
+
+## One last thing: feedback
+
+Tell us how it went, straight from Telegram. DM the TA bot **@JillWatson_Bot**:
+
+```
+/feedback This workshop was amazing!
+```
+
+Use your own words, good or bad, it all helps us make it better.
+
+**Thank you!** 🎉
