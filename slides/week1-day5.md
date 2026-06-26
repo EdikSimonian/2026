@@ -143,25 +143,32 @@ section.cover p, section.cover strong, section.cover em {
 
 ---
 
+## 📢 Heads up: quizzes
+
+- Quizzes are **harder** now
+- Answers are **shuffled per student** — your neighbor's screen won't help
+- They run **inside Telegram**, right where your bot lives
+- **Two today:** one at the **start of class**, one **right after the break**
+
+**Don't be late** — a quiz you miss is a quiz you can't take.
+
+---
+
 ## First: fix your git identity
 
-Swapped seats? This machine may still be signed in as **yesterday's student** — so your pushes fail, or commits land under the wrong name.
+Swapped seats? This machine may be signed in as **yesterday's student** — pushes fail or land under the wrong name. Reset it:
 
 ```bash
-brew install gh       # GitHub CLI — once per machine
-gh auth logout        # drop the previous student's login
-gh auth login         # GitHub.com → HTTPS → Login with a web browser
-gh auth setup-git     # make git push as YOU
-```
+brew install gh      # GitHub CLI (once per machine)
+gh auth logout       # drop the old login
+gh auth login        # GitHub.com → HTTPS → Login with a browser
+gh auth setup-git    # git pushes as YOU now
 
-Then tell git who you are (run inside your bot folder):
-
-```bash
 git config user.name  "Your Name"
-git config user.email "the-email-on-your-github"
+git config user.email "your-github-email"
 ```
 
-*"Login with a web browser" works even if you sign in to GitHub with Google — it's still GitHub's OAuth.*
+Run the `git config` lines **inside your bot folder**. *Browser login works even if you sign in to GitHub with Google.*
 
 ---
 
@@ -237,11 +244,3 @@ git commit -am "Add my feature" && git push
 3. Vote: funniest persona, most useful feature, best surprise
 
 **Same bot you started on Day 1, now it's yours, and it lives on the internet.**
-
----
-
-## Next week
-
-Your bot's brain is someone else's model behind an API.
-
-**Week 2: we train our own.** 63 GB of Armenian text, one GPU, a 350-million-parameter model, built from scratch, fine-tuned to chat, and plugged into *this* bot.
