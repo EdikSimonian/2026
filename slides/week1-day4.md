@@ -204,7 +204,23 @@ PA_API_TOKEN=<the token>
 make deploy-pa
 ```
 
-<!-- The script pauses once and asks you to open one URL in the browser; a PA quirk. -->
+It creates the web app and a bash console, then **pauses once** for a browser click (next slide).
+
+---
+
+## The one pause: open the console
+
+`make deploy-pa` is hands-off **except once**. It creates your web app, opens a **bash console** on PA, and stops:
+
+```
+!!! ONE-TIME MANUAL STEP !!!
+Open this URL, wait for the shell prompt, then come back:
+https://www.pythonanywhere.com/user/<you>/consoles/<id>/
+```
+
+- PA won't run commands on a console until it's been **opened once** in the browser
+- Open the URL → wait for the `$` prompt → press **Enter** back in your terminal
+- The script takes over: clone repo → venv → install deps → configure → reload
 
 ---
 

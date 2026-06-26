@@ -143,6 +143,28 @@ section.cover p, section.cover strong, section.cover em {
 
 ---
 
+## First: fix your git identity
+
+Swapped seats? This machine may still be signed in as **yesterday's student** — so your pushes fail, or commits land under the wrong name.
+
+```bash
+brew install gh       # GitHub CLI — once per machine
+gh auth logout        # drop the previous student's login
+gh auth login         # GitHub.com → HTTPS → Login with a web browser
+gh auth setup-git     # make git push as YOU
+```
+
+Then tell git who you are (run inside your bot folder):
+
+```bash
+git config user.name  "Your Name"
+git config user.email "the-email-on-your-github"
+```
+
+*"Login with a web browser" works even if you sign in to GitHub with Google — it's still GitHub's OAuth.*
+
+---
+
 ## Today: you're the engineer
 
 Four days, four superpowers:
