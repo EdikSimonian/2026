@@ -126,9 +126,10 @@ section.title p, section.title strong {
 This is the NATIVE WINDOWS (Scoop + PowerShell) edition of Day 1, for labs where
 WSL can't be enabled. The WSL edition (week1-day1.md) is the default; the two
 differ only in the terminal-setup slides and `make` -> `.\make.ps1`. Days 2-5
-are still written for bash — a student on this native track runs Day 2's
-`./connect-claude-code.sh` as `.\make.ps1 claude KEY` and Day 4's `make deploy-pa`
-as `.\make.ps1 deploy-pa` (PowerShell 7). See setup/WINDOWS.md.
+now have matching PowerShell decks (week1-dayN-windows.md), so this native track
+is a full set — present the `-windows.md` deck each day. The PowerShell-swap slide
+at the end stays as a quick reference if a Mac/Linux command ever turns up. See
+setup/WINDOWS.md.
 -->
 
 ---
@@ -394,7 +395,7 @@ Change the greeting → `Ctrl+C` → `.\make.ps1 run` → send `/start`.
 
 ## On later slides: your PowerShell swap
 
-Days 2–5 are written for Mac/Linux. Three swaps make every command yours:
+Each day has a matching **Windows deck** — but if a Mac/Linux command ever turns up, three swaps make it yours:
 
 | The slide shows | You type |
 |---|---|
