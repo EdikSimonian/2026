@@ -10,9 +10,11 @@ Your key looks like `sk-………` and is personal (one per student: `gyumri-NN`
 
 ## The fast way (macOS / Linux / WSL / Git-Bash)
 
-From the workshop repo:
+Clone the workshop repo (once), then run the connect script:
 
 ```bash
+cd ~
+git clone https://github.com/EdikSimonian/2026.git   # skip if you already have it
 cd 2026/setup
 ./connect-claude-code.sh sk-your-key-here
 ```

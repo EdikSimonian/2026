@@ -206,6 +206,14 @@ make deploy-pa
 
 It creates the web app and a bash console, then **pauses once** for a browser click (next slide).
 
+<!--
+Instructor (WSL/Windows): deploy day is where WSL's two gotchas bite, both in
+setup/WSL.md. (1) If `make deploy-pa` fails with TLS/SSL errors after lunch or a
+sleep, the WSL clock drifted — `wsl --shutdown` in PowerShell, reopen Ubuntu,
+retry. (2) The console/PA URLs won't auto-open a browser from WSL — students
+copy each URL into the Windows browser by hand (same as gh auth on Day 1).
+-->
+
 ---
 
 ## The one pause: open the console

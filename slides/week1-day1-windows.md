@@ -3,7 +3,7 @@ marp: true
 size: 16:9
 paginate: true
 backgroundImage: url('img/bg.png')
-footer: 'Week 1 · Day 1 · Setup and First Message'
+footer: 'Week 1 · Day 1 · Setup and First Message (Windows · PowerShell)'
 ---
 
 <style>
@@ -118,9 +118,18 @@ section.title p, section.title strong {
 <!-- _footer: '' -->
 
 # AI & Software Engineering Workshop
-## Week 1, Day 1: Setup and First Message
+## Week 1, Day 1: Setup and First Message — Windows
 
 **Edik Simonian, Summer 2026**
+
+<!--
+This is the NATIVE WINDOWS (Scoop + PowerShell) edition of Day 1, for labs where
+WSL can't be enabled. The WSL edition (week1-day1.md) is the default; the two
+differ only in the terminal-setup slides and `make` -> `.\make.ps1`. Days 2-5
+are still written for bash — a student on this native track runs Day 2's
+`./connect-claude-code.sh` as `.\make.ps1 claude KEY` and Day 4's `make deploy-pa`
+as `.\make.ps1 deploy-pa` (PowerShell 7). See setup/WINDOWS.md.
+-->
 
 ---
 
@@ -194,7 +203,7 @@ This is where you'll be by **Friday**: your own bot, your personality, live on t
 
 ## The week, day by day
 
-- **Day 1, Setup & First Message** *(today)*: tokens, `make run`, your first `/start` edit
+- **Day 1, Setup & First Message** *(today)*: tokens, `.\make.ps1 run`, your first `/start` edit
 - **Day 2, Personality & Prompts**: a system prompt that gives your bot a voice — and meet Claude Code
 - **Day 3, New Commands**: live-code `/joke`, then build your own, with a test
 - **Day 4, Memory & Deploy**: memory that survives restarts, then go live on PythonAnywhere
@@ -230,45 +239,46 @@ Two ways Telegram talks to your code:
 
 ---
 
-## First: open your terminal
+## First: set up your toolkit
 
-*This lab runs **Windows**, so we work inside **WSL** — real Linux, running on Windows. Every command this week then runs exactly as the slides show.*
+*This lab runs **Windows**, so we work in **PowerShell** with **Scoop** — a package manager that installs our tools with **no admin rights**.*
 
-1. Open the **Ubuntu** app from the Start menu → a black terminal opens
-2. First launch may ask for a **username + password** — pick simple ones, and remember the password
-3. **Type every command in this Ubuntu window** — not PowerShell, not Command Prompt
+Open **PowerShell** (Start menu → type *PowerShell*), then run **once**:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+irm get.scoop.sh | iex
+scoop install git python gh
+```
 
 > On your own Mac or Linux laptop? You're already set — skip to Setup 1.
 
 <!--
-Instructor: Windows lab machines must be pre-provisioned with WSL Ubuntu +
-git/make/python3/venv/pip/curl/gh — see setup/WSL.md. Consider a shared
-`student` UNIX user in the image so the first-launch username/password prompt
-doesn't cost 20 kids three minutes each.
+Instructor: lab machines can be pre-provisioned with Scoop + git/python/gh so
+students skip this slide — see setup/WINDOWS.md. The Set-ExecutionPolicy line is
+also what lets the repo's .ps1 scripts (make.ps1, connect-claude-code.ps1) run.
+PowerShell 7 (scoop install pwsh) is only needed for Day 4's deploy.
 -->
 
 ---
 
-## Get WSL ready
-
-Work in your **home** folder, never the Windows `C:` drive:
-
-```bash
-cd ~
-pwd         # should say /home/...  — not /mnt/c/...
-```
+## Check your toolkit
 
 Each line should print a version — if one's missing, tell us:
 
-```bash
+```powershell
 git --version
-python3 --version
-make --version
+python --version
 gh --version
-curl --version | head -1
 ```
 
-*Stuck? `setup/WSL.md` has every fix — browser won't open, `\r` errors, clock drift after sleep.*
+Then move into your **home** folder, where your projects will live:
+
+```powershell
+cd ~        # your C:\Users\<you> folder
+```
+
+*Stuck? `setup/WINDOWS.md` has the fixes — "scripts disabled", Python not on PATH, PowerShell 7.*
 
 ---
 
@@ -278,10 +288,10 @@ curl --version | head -1
 2. **Fork** [`EdikSimonian/telegram-pythonanywhere-bot`](https://github.com/EdikSimonian/telegram-pythonanywhere-bot) — your own copy, needed for auto-deploy on Day 4
 3. Clone your fork and install:
 
-```bash
+```powershell
 git clone https://github.com/<your-username>/telegram-pythonanywhere-bot.git
 cd telegram-pythonanywhere-bot
-make install
+.\make.ps1 install
 ```
 
 ---
@@ -316,8 +326,8 @@ Verify the current Cerebras free lineup with GET /v1/models before class.
 
 ## Wire it up: `.env`
 
-```bash
-cp .env.example .env
+```powershell
+copy .env.example .env
 ```
 
 Set two lines:
@@ -335,8 +345,8 @@ Leave the rest as-is.
 
 ## First contact
 
-```bash
-make run
+```powershell
+.\make.ps1 run
 ```
 
 ```
@@ -352,8 +362,8 @@ Message your bot. Watch the exchange appear in your terminal.
 
 ## Prove it works, like an engineer
 
-```bash
-make test
+```powershell
+.\make.ps1 test
 ```
 
 - The whole suite runs **offline**: no API keys, no network
@@ -375,9 +385,25 @@ def cmd_start(message):
     )
 ```
 
-Change the greeting → `Ctrl+C` → `make run` → send `/start`.
+Change the greeting → `Ctrl+C` → `.\make.ps1 run` → send `/start`.
 
 **You just shipped your first change.**
+
+---
+
+## On later slides: your PowerShell swap
+
+Days 2–5 are written for Mac/Linux. Three swaps make every command yours:
+
+| The slide shows | You type |
+|---|---|
+| `make <thing>` | `.\make.ps1 <thing>` |
+| `./connect-claude-code.sh KEY` | `.\make.ps1 claude KEY` |
+| a `--persist` flag | `-Persist` |
+
+Everything else — `git`, `gh`, editing files — is **exactly the same**.
+
+> Day 4's `.\make.ps1 deploy-pa` needs PowerShell 7: `scoop install pwsh`.
 
 ---
 

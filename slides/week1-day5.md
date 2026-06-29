@@ -160,8 +160,7 @@ section.cover p, section.cover strong, section.cover em {
 Swapped seats? This machine may be signed in as **yesterday's student** — pushes fail or land under the wrong name. Reset it:
 
 ```bash
-brew install gh      # GitHub CLI (once per machine)
-gh auth logout       # drop the old login
+gh auth logout       # drop the old login (ok if "not logged in")
 gh auth login        # GitHub.com → HTTPS → browser (Google OK)
 gh auth setup-git    # git pushes as YOU now
 
@@ -170,6 +169,20 @@ git config user.email "your-github-email"
 ```
 
 Run the `git config` lines **inside your bot folder**.
+
+---
+
+## Still "Permission denied (publickey)"?
+
+That `git@github.com:` means your repo talks to GitHub over **SSH** — but your key isn't on this machine. Point it at **HTTPS** so your `gh` login is used:
+
+```bash
+git remote -v        # git@github.com:... = SSH (the problem)
+git remote set-url origin https://github.com/<you>/telegram-pythonanywhere-bot.git
+git push             # now authenticates with your gh login
+```
+
+HTTPS + `gh auth` needs **no SSH key** — exactly what you want on a shared machine.
 
 ---
 

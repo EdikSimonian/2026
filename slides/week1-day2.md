@@ -249,9 +249,11 @@ Today you shaped your bot by hand. Now meet the tool that helps you build the ne
 
 ## Connect it to the workshop AI
 
-From the workshop repo:
+Get the workshop repo (once), then run the connect script:
 
 ```bash
+cd ~
+git clone https://github.com/EdikSimonian/2026.git   # skip if you already have it
 cd 2026/setup
 ./connect-claude-code.sh sk-your-key-here
 ```
@@ -265,7 +267,11 @@ Instructor: confirm before class: the exact gateway base URL (no /v1; Caddy
 routes to LiteLLM's Anthropic path), the model alias, and how each student
 gets their key (gyumri-NN / yerevan-NN). Setting ANTHROPIC_AUTH_TOKEN skips
 Claude Code's login prompt. The script handles macOS / Linux / WSL / Git-Bash.
-Native Windows PowerShell students should use setup/CLAUDE-CODE.md.
+Yerevan runs on Windows: students work inside WSL (Ubuntu) so this bash script —
+and every other slide command — runs unchanged. See setup/WSL.md. (Native Windows
+PowerShell, only if WSL is unavailable: setup/CLAUDE-CODE.md.)
+The git clone assumes EdikSimonian/2026 is public (or pre-cloned at ~/2026 on
+the lab image); confirm students can reach it before class.
 -->
 
 ---
@@ -275,7 +281,7 @@ Native Windows PowerShell students should use setup/CLAUDE-CODE.md.
 Want new terminals to stay connected?
 
 ```bash
-cd 2026/setup
+cd ~/2026/setup
 ./connect-claude-code.sh sk-your-key-here --persist
 ```
 
@@ -286,6 +292,14 @@ This saves the workshop settings in your shell profile:
 - the model settings Claude Code needs
 
 New terminal windows can run `claude` immediately.
+
+> **Shared lab machine? Skip `--persist`.** It writes your class key into the machine's profile, where the next student would inherit it — run the plain command (previous slide) once per session instead.
+
+<!--
+Instructor (Yerevan/WSL): --persist on a shared machine leaves the student's
+class key in ~/.bashrc for the next student — see setup/WSL.md "Shared-machine
+hygiene". Cleanup: delete the block between the workshop markers in ~/.bashrc.
+-->
 
 ---
 

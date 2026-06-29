@@ -29,11 +29,21 @@ Week 1 is identical in **Gyumri** and **Yerevan**; **Week 2** runs only in Yerev
 
 ### Yerevan — Week 1: Building a Telegram Bot with AI
 
-Same content as Gyumri Week 1.
+Same content as Gyumri Week 1, but the Yerevan lab is **Windows machines**. Two
+setup tracks — pick one for the lab; they're identical from Day 2 on:
+
+- **WSL (Ubuntu)** *(default)* — every slide command runs unchanged; setup and
+  per-machine provisioning in [`setup/WSL.md`](./setup/WSL.md).
+- **Native (Scoop + PowerShell)** — for labs where WSL can't be enabled; uses the
+  repo's `.ps1` scripts (`make` → `.\make.ps1`), provisioned admin-free with Scoop.
+  Setup in [`setup/WINDOWS.md`](./setup/WINDOWS.md). Day 1 has a dedicated PowerShell
+  deck; on Days 2/4 run `.\make.ps1 claude` / `.\make.ps1 deploy-pa` in place of the
+  `.sh` commands.
 
 | Day | Topic | Source | PDF |
 |-----|-------|--------|-----|
-| 1 | Setup and First Message | [md](./slides/week1-day1.md) | [pdf](./presentation/week1-day1.pdf) |
+| 1 *(WSL)* | Setup and First Message | [md](./slides/week1-day1.md) | [pdf](./presentation/week1-day1.pdf) |
+| 1 *(PowerShell)* | Setup and First Message | [md](./slides/week1-day1-windows.md) | [pdf](./presentation/week1-day1-windows.pdf) |
 | 2 | Personality and Prompts | [md](./slides/week1-day2.md) | [pdf](./presentation/week1-day2.pdf) |
 | 3 | Commands and Memory | [md](./slides/week1-day3.md) | [pdf](./presentation/week1-day3.pdf) |
 | 4 | Deploy | [md](./slides/week1-day4.md) | [pdf](./presentation/week1-day4.pdf) |
