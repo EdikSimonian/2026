@@ -176,6 +176,7 @@ Go around, **30 seconds each**:
 - **Quick quizzes** at the start of each workshop, and again after the break
 - **Don't be more than 5 minutes late** — a quiz you miss is one you can't take
 - **No copy-pasting code from ChatGPT** — use the Claude Code we provide, and understand every line you ship
+- **No private info to the bot** — no real names, addresses, phones, or passwords; chats go to an outside AI service
 
 ---
 
