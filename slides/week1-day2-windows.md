@@ -150,15 +150,6 @@ telegram-pythonanywhere-bot folder — no separate 2026 clone. See setup/WINDOWS
 
 ---
 
-## Ground rules
-
-- No watching videos during the workshop
-- No gaming during the workshop
-- Keep side conversations short and quiet
-- If you use AI-generated code, you must **fully understand it** and be able to explain how it works
-
----
-
 ## What is a system prompt?
 
 - An instruction the model sees **before every conversation**
@@ -280,6 +271,13 @@ prompt. Manual env-var route: setup/CLAUDE-CODE.md "native Windows PowerShell".
 ---
 
 ## Keep Claude Code connected
+
+<style scoped>
+section { font-size: 25px; }
+section pre { font-size: 20px; }
+section li { margin-bottom: 0.15em; }
+</style>
+
 
 Want new terminals to stay connected?
 
