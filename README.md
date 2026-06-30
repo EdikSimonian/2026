@@ -37,16 +37,18 @@ setup tracks — pick the matching deck column below for the lab:
 - **Native (Scoop + PowerShell)** — for labs where WSL can't be enabled; uses the
   repo's `.ps1` scripts (`make` → `.\make.ps1`), provisioned admin-free with Scoop.
   Setup in [`setup/WINDOWS.md`](./setup/WINDOWS.md). Every day has its own PowerShell
-  deck (the `-windows.md` files / right-hand column) — `.\make.ps1 claude` on Day 2
-  and `.\make.ps1 deploy-pa` (PowerShell 7) on Day 4 stand in for the `.sh` commands.
+  deck (the `-windows.md` files) — `.\make.ps1 claude` on Day 2 and `.\make.ps1
+  deploy-pa` (PowerShell 7) on Day 4 stand in for the `.sh` commands. An **Eastern
+  Armenian** translation of the PowerShell track lives in the `-windows-hy.md` files
+  (rightmost column).
 
-| Day | Topic | Mac/Linux/WSL | Windows (PowerShell) |
-|-----|-------|---------------|----------------------|
-| 1 | Setup and First Message | [md](./slides/week1-day1.md) · [pdf](./presentation/week1-day1.pdf) | [md](./slides/week1-day1-windows.md) · [pdf](./presentation/week1-day1-windows.pdf) |
-| 2 | Personality and Prompts | [md](./slides/week1-day2.md) · [pdf](./presentation/week1-day2.pdf) | [md](./slides/week1-day2-windows.md) · [pdf](./presentation/week1-day2-windows.pdf) |
-| 3 | Commands and Memory | [md](./slides/week1-day3.md) · [pdf](./presentation/week1-day3.pdf) | [md](./slides/week1-day3-windows.md) · [pdf](./presentation/week1-day3-windows.pdf) |
-| 4 | Deploy | [md](./slides/week1-day4.md) · [pdf](./presentation/week1-day4.pdf) | [md](./slides/week1-day4-windows.md) · [pdf](./presentation/week1-day4-windows.pdf) |
-| 5 | Build Your Own Bot | [md](./slides/week1-day5.md) · [pdf](./presentation/week1-day5.pdf) | [md](./slides/week1-day5-windows.md) · [pdf](./presentation/week1-day5-windows.pdf) |
+| Day | Topic | Mac/Linux/WSL | Windows (PowerShell) | Windows · Հայերեն |
+|-----|-------|---------------|----------------------|-------------------|
+| 1 | Setup and First Message | [md](./slides/week1-day1.md) · [pdf](./presentation/week1-day1.pdf) | [md](./slides/week1-day1-windows.md) · [pdf](./presentation/week1-day1-windows.pdf) | [md](./slides/week1-day1-windows-hy.md) · [pdf](./presentation/week1-day1-windows-hy.pdf) |
+| 2 | Personality and Prompts | [md](./slides/week1-day2.md) · [pdf](./presentation/week1-day2.pdf) | [md](./slides/week1-day2-windows.md) · [pdf](./presentation/week1-day2-windows.pdf) | [md](./slides/week1-day2-windows-hy.md) · [pdf](./presentation/week1-day2-windows-hy.pdf) |
+| 3 | Commands and Memory | [md](./slides/week1-day3.md) · [pdf](./presentation/week1-day3.pdf) | [md](./slides/week1-day3-windows.md) · [pdf](./presentation/week1-day3-windows.pdf) | [md](./slides/week1-day3-windows-hy.md) · [pdf](./presentation/week1-day3-windows-hy.pdf) |
+| 4 | Deploy | [md](./slides/week1-day4.md) · [pdf](./presentation/week1-day4.pdf) | [md](./slides/week1-day4-windows.md) · [pdf](./presentation/week1-day4-windows.pdf) | [md](./slides/week1-day4-windows-hy.md) · [pdf](./presentation/week1-day4-windows-hy.pdf) |
+| 5 | Build Your Own Bot | [md](./slides/week1-day5.md) · [pdf](./presentation/week1-day5.pdf) | [md](./slides/week1-day5-windows.md) · [pdf](./presentation/week1-day5-windows.pdf) | [md](./slides/week1-day5-windows-hy.md) · [pdf](./presentation/week1-day5-windows-hy.pdf) |
 
 ### Yerevan — Week 2: Training a Language Model from Scratch
 
